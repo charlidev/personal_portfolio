@@ -1,0 +1,112 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { projects } from '../data/portfolio';
+---
+
+<section id="proyectos" class="content-section container" aria-labelledby="projects-title">
+  <SectionHeading id="projects-title" eyebrow="Trabajo seleccionado" title="Proyectos" />
+  <div class="project-grid">
+    {projects.map((project) => (
+      <article class="project">
+        <p class="project-index eyebrow">Proyecto 0{project.number}</p>
+        <h3>{project.title}</h3>
+        <p class="project-description">{project.description}</p>
+        <p class="project-technologies">
+          <span>Tecnologías:</span> {project.technologies.join(' · ')}
+        </p>
+        {project.href ? (
+          <a class="project-link" href={project.href}>
+            Ver proyecto <span aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <span class="project-link">Página individual pendiente</span>
+        )}
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .content-section {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--component-gap);
+    margin-top: 2.5rem;
+  }
+
+  .project {
+    display: flex;
+    min-height: 17rem;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: rgb(11 83 81 / 16%);
+  }
+
+  .project-index {
+    margin: 0;
+    color: var(--color-secondary);
+  }
+
+  .project h3 {
+    margin: 1.5rem 0 0;
+    font-size: var(--text-xl);
+    font-weight: 550;
+    line-height: 1.3;
+  }
+
+  .project-description {
+    margin: 0.65rem 0 0;
+    color: var(--color-text-muted);
+  }
+
+  .project-technologies {
+    margin: 1.25rem 0 0;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .project-technologies span {
+    color: var(--color-highlight);
+  }
+
+  .project-link {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    color: var(--color-highlight);
+    font-size: var(--text-sm);
+  }
+
+  a.project-link {
+    text-decoration: none;
+  }
+
+  a.project-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (max-width: 52rem) {
+    .project-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 38rem) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project {
+      min-height: 15rem;
+    }
+  }
+</style>

@@ -1,0 +1,125 @@
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+:root {
+  color-scheme: dark;
+
+  /* Palette */
+  --color-background: #092327;
+  --color-surface: #0b5351;
+  --color-accent: #00a9a5;
+  --color-secondary: #4e8098;
+  --color-highlight: #90c2e7;
+  --color-text: #f2f7f6;
+  --color-text-muted: #b5c8c7;
+  --color-border: rgb(242 247 246 / 14%);
+  --color-focus: #90c2e7;
+
+  /* Typography */
+  --font-sans: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'SFMono-Regular', Consolas, monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: clamp(1.75rem, 3vw, 2.5rem);
+  --text-hero: clamp(3rem, 7vw, 5rem);
+  --text-lead: clamp(1.0625rem, 2vw, 1.25rem);
+
+  /* Layout and spacing */
+  --content-max-width: 72rem;
+  --page-gutter: clamp(1.25rem, 5vw, 4rem);
+  --section-space: clamp(4.5rem, 10vw, 8rem);
+  --component-gap: clamp(1rem, 2vw, 1.5rem);
+  --hero-gap: clamp(2rem, 5vw, 5rem);
+  --header-height: 4.25rem;
+
+  /* Shape */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+body {
+  min-width: 20rem;
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+a {
+  color: var(--color-highlight);
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--color-text);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-background);
+}
+
+.container {
+  width: min(calc(100% - (2 * var(--page-gutter))), var(--content-max-width));
+  margin-inline: auto;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--color-highlight);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

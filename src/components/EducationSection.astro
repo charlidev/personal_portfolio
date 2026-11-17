@@ -1,0 +1,57 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { educationEntries } from '../data/portfolio';
+---
+
+<section id="formacion" class="content-section container" aria-labelledby="education-title">
+  <SectionHeading
+    id="education-title"
+    eyebrow="Aprendizaje"
+    title="Certificaciones y formación"
+  />
+  <ul class="education-list">
+    {educationEntries.map((entry) => (
+      <li>
+        <span>{entry}</span>
+        <span class="pending">[Contenido pendiente]</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .content-section {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .education-list {
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .education-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--component-gap);
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pending {
+    color: var(--color-text-muted);
+    text-align: right;
+  }
+
+  @media (max-width: 38rem) {
+    .education-list li {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .pending {
+      text-align: left;
+    }
+  }
+</style>

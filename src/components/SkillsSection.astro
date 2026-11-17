@@ -1,0 +1,61 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { skillGroups } from '../data/portfolio';
+---
+
+<section id="habilidades" class="content-section container" aria-labelledby="skills-title">
+  <SectionHeading id="skills-title" eyebrow="Herramientas" title="Habilidades" />
+  <div class="skill-groups">
+    {skillGroups.map((group) => (
+      <div class="skill-group">
+        <h3>{group.name}</h3>
+        <ul>
+          {group.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .content-section {
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .skill-groups {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--component-gap);
+    margin-top: 2.5rem;
+  }
+
+  .skill-group h3 {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-base);
+    font-weight: 550;
+  }
+
+  .skill-group ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    color: var(--color-text);
+    list-style: none;
+  }
+
+  @media (max-width: 45rem) {
+    .skill-groups {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 32rem) {
+    .skill-groups {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

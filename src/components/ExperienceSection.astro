@@ -1,49 +1,49 @@
 ﻿---
 import SectionHeading from './SectionHeading.astro';
-import { pulqueLabsExperience } from '../data/portfolio';
+import { professionalExperiences } from '../data/portfolio';
 ---
 
 <section id="experiencia" class="content-section container" aria-labelledby="experience-title">
   <SectionHeading id="experience-title" eyebrow="Trayectoria" title="Experiencia" />
 
-  <article class="experience-entry" aria-labelledby="pulquelabs-role">
-    <header class="experience-header">
-      <p class="eyebrow">PRÁCTICAS PROFESIONALES</p>
-      <h3 id="pulquelabs-role">{pulqueLabsExperience.role}</h3>
-      
-      <p class="company-name">{pulqueLabsExperience.company}</p>
-      <p class="experience-meta">
-        <span>{pulqueLabsExperience.sector}</span>
-        <span>{pulqueLabsExperience.period}</span>
-        
-      </p>
-    </header>
+  {professionalExperiences.map((experience, index) => (
+    <article class="experience-entry" aria-labelledby={`experience-role-${index}`}>
+      <header class="experience-header">
+        {experience.eyebrow && <p class="eyebrow">{experience.eyebrow}</p>}
+        <h3 id={`experience-role-${index}`}>{experience.role}</h3>
+        <p class="company-name">{experience.company}</p>
+        <p class="experience-meta">
+          {experience.sector && <span>{experience.sector}</span>}
+          <span>{experience.period}</span>
+        </p>
+      </header>
 
-    <p class="experience-introduction">{pulqueLabsExperience.introduction}</p>
+      <p class="experience-introduction">{experience.introduction}</p>
 
-    <div class="responsibilities">
-      <h4>Responsabilidades</h4>
-      <ul>
-        {pulqueLabsExperience.responsibilities.map((responsibility) => (
-          <li>{responsibility}</li>
-        ))}
-      </ul>
-    </div>
-
-    <div class="tools">
-      <h4>Tecnologías y herramientas</h4>
-      <div class="tool-groups">
-        {pulqueLabsExperience.toolGroups.map((group) => (
-          <div class="tool-group">
-            <h5>{group.category}</h5>
-            <ul aria-label={group.category}>
-              {group.tools.map((tool) => <li>{tool}</li>)}
-            </ul>
-          </div>
-        ))}
+      <div class="responsibilities">
+        <h4>Responsabilidades</h4>
+        <ul>
+          {experience.responsibilities.map((responsibility) => (
+            <li>{responsibility}</li>
+          ))}
+        </ul>
       </div>
-    </div>
-  </article>
+
+      <div class="tools">
+        <h4>Tecnologías y herramientas</h4>
+        <div class="tool-groups">
+          {experience.toolGroups.map((group) => (
+            <div class="tool-group">
+              <h5>{group.category}</h5>
+              <ul aria-label={group.category}>
+                {group.tools.map((tool) => <li>{tool}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
+  ))}
 </section>
 
 <style>

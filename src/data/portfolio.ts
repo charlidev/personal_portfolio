@@ -33,9 +33,10 @@ export interface ExperienceToolGroup {
 }
 
 export interface ProfessionalExperience {
+  eyebrow?: string;
   role: string;
   company: string;
-  sector: string;
+  sector?: string;
   period: string;
   introduction: string;
   responsibilities: string[];
@@ -124,6 +125,7 @@ export const contactMethods: ContactMethod[] = [
 ];
 
 export const pulqueLabsExperience: ProfessionalExperience = {
+  eyebrow: 'PRÁCTICAS PROFESIONALES',
   role: 'Practicante de Desarrollo Web',
 
   company: 'PulqueLabs',
@@ -154,5 +156,40 @@ export const pulqueLabsExperience: ProfessionalExperience = {
     },
   ],
 };
+
+export const gerdauCorsaExperience: ProfessionalExperience = {
+  role: 'Becario Analista de Logística',
+  company: 'Gerdau Corsa',
+  period: '2021 - 2023',
+  introduction:
+    'Participé en el análisis y seguimiento de operaciones de transporte de carga, procesando información de unidades y transportistas para generar reportes y tableros de control. Utilicé datos provenientes de archivos Excel y plataformas de rastreo GPS para analizar recorridos, entregas y actividad operativa de las unidades.',
+  responsibilities: [
+    'Procesamiento y organización de archivos Excel para generar reportes sobre la operación de transporte, incluyendo la cantidad de unidades por línea transportista y la carga entregada a clientes.',
+    'Extracción y análisis de información de plataformas de rastreo GPS para consultar viajes realizados por unidad, puntos de origen y destino, y tiempos de recorrido.',
+    'Elaboración de reportes y tableros de seguimiento utilizando Microsoft Excel y Power BI para visualizar información de la operación logística.',
+    'Seguimiento de indicadores relacionados con la actividad de las unidades de transporte y las entregas de carga.',
+    'Participación en reuniones de seguimiento con líneas transportistas para revisar aspectos operativos del servicio de transporte y medidas de seguridad en planta.',
+    'Seguimiento a las líneas transportistas para verificar que mantuvieran activos sus dispositivos GPS, de acuerdo con los requisitos establecidos para su contratación.',
+  ],
+  toolGroups: [
+    {
+      category: 'Análisis y reportes',
+      tools: ['Microsoft Excel'],
+    },
+    {
+      category: 'Visualización de datos',
+      tools: ['Power BI'],
+    },
+    {
+      category: 'Seguimiento de transporte',
+      tools: ['Plataforma de rastreo GPS'],
+    },
+  ],
+};
+
+export const professionalExperiences: ProfessionalExperience[] = [
+  gerdauCorsaExperience,
+  pulqueLabsExperience,
+];
 
 

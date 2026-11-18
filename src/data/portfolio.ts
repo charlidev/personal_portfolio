@@ -27,6 +27,17 @@ export interface EducationEntry {
   status?: string;
 }
 
+export interface PortfolioCertification {
+  issuer: string;
+  name: string;
+  holder: string;
+  issuedAt: string;
+  expiration: string;
+  topics: string[];
+  image: string;
+  credentialUrl?: string;
+}
+
 export interface ExperienceToolGroup {
   category: string;
   tools: string[];
@@ -98,6 +109,18 @@ export const educationEntries: EducationEntry[] = [
     institution: 'Bachillerato Tecnológico Industrial y de Servicios No. 59 (CBTIS 59)',
     program: 'Carrera Técnica en Programación',
     period: '2014 – 2017',
+  },
+];
+
+export const certifications: PortfolioCertification[] = [
+  {
+    issuer: 'Databricks Academy',
+    name: 'Academy Accreditation - Databricks Fundamentals',
+    holder: 'Carlos Daniel Martínez López',
+    issuedAt: '3 de abril de 2026',
+    expiration: 'No expira',
+    topics: ['Databricks', 'Data Intelligence Platform', 'Data Management Platforms'],
+    image: '/images/certifications/databricks-fundamentals.png',
   },
 ];
 

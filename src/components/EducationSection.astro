@@ -1,6 +1,6 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import { educationEntries } from '../data/portfolio';
+import { certifications, educationEntries } from '../data/portfolio';
 ---
 
 <section id="formacion" class="content-section container" aria-labelledby="education-title">
@@ -31,16 +31,48 @@ import { educationEntries } from '../data/portfolio';
       </ol>
     </div>
 
-    <ul class="placeholder-list" aria-label="Certificaciones y cursos">
-      <li>
-        <h3>Certificaciones</h3>
-        <span class="pending">[Contenido pendiente]</span>
-      </li>
-      <li>
+    <div class="additional-learning">
+      <section class="certifications-group" aria-labelledby="certifications-title">
+        <h3 id="certifications-title" class="additional-heading">Certificaciones</h3>
+        <ul class="certification-list">
+          {certifications.map((certification) => (
+            <li class="certification-card">
+              <img
+                class="certification-image"
+                src={certification.image}
+                alt={`Insignia ${certification.name} de ${certification.issuer}`}
+                loading="lazy"
+              />
+              <div class="certification-content">
+                <p class="certification-issuer">{certification.issuer}</p>
+                <h4>{certification.name}</h4>
+                <p class="certification-holder">Titular: {certification.holder}</p>
+
+                <dl class="certification-meta">
+                  <div>
+                    <dt>Fecha de emisión</dt>
+                    <dd>{certification.issuedAt}</dd>
+                  </div>
+                  <div>
+                    <dt>Vigencia</dt>
+                    <dd>{certification.expiration}</dd>
+                  </div>
+                </dl>
+
+                <ul class="certification-topics" aria-label="Conocimientos asociados">
+                  {certification.topics.map((topic) => <li>{topic}</li>)}
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <div class="course-placeholder">
         <h3>Cursos</h3>
         <span class="pending">[Contenido pendiente]</span>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -54,25 +86,129 @@ import { educationEntries } from '../data/portfolio';
     margin-top: 2.5rem;
   }
 
-  .placeholder-list,
   .education-list {
     padding: 0;
     list-style: none;
   }
 
-  .placeholder-list {
+  .additional-learning {
     margin: 2.5rem 0 0;
   }
 
-  .placeholder-list li {
+  .additional-heading {
+    margin: 0 0 1rem;
+    font-size: var(--text-xl);
+    font-weight: 550;
+  }
+
+  .certification-list {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .certification-card {
+    display: grid;
+    grid-template-columns: clamp(5.5rem, 12vw, 8rem) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2rem);
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: rgb(11 83 81 / 18%);
+  }
+
+  .certification-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    align-self: center;
+    justify-self: center;
+    object-fit: contain;
+  }
+
+  .certification-content {
+    min-width: 0;
+  }
+
+  .certification-issuer {
+    margin: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .certification-content h4 {
+    margin: 0.45rem 0 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .certification-holder {
+    margin: 0.5rem 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .certification-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    margin: 1rem 0 0;
+  }
+
+  .certification-meta div {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .certification-meta dt {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .certification-meta dd {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .certification-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .certification-topics li {
+    padding: 0.25rem 0.55rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-highlight);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+  }
+
+  .course-placeholder {
     display: flex;
     justify-content: space-between;
     gap: var(--component-gap);
     padding-block: 0.8rem;
     border-bottom: 1px solid var(--color-border);
+    margin-top: 1.5rem;
   }
 
-  .placeholder-list h3 {
+  .course-placeholder h3 {
     margin: 0;
     font-size: var(--text-base);
     font-weight: 500;
@@ -177,7 +313,12 @@ import { educationEntries } from '../data/portfolio';
   }
 
   @media (max-width: 38rem) {
-    .placeholder-list li,
+    .certification-card {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      gap: 0.9rem;
+    }
+
+    .course-placeholder,
     .education-entry {
       flex-direction: column;
       gap: 0.35rem;

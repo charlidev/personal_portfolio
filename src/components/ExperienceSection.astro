@@ -6,44 +6,55 @@ import { professionalExperiences } from '../data/portfolio';
 <section id="experiencia" class="content-section container" aria-labelledby="experience-title">
   <SectionHeading id="experience-title" eyebrow="Trayectoria" title="Experiencia" />
 
-  {professionalExperiences.map((experience, index) => (
-    <article class="experience-entry" aria-labelledby={`experience-role-${index}`}>
-      <header class="experience-header">
-        {experience.eyebrow && <p class="eyebrow">{experience.eyebrow}</p>}
-        <h3 id={`experience-role-${index}`}>{experience.role}</h3>
-        <p class="company-name">{experience.company}</p>
-        <p class="experience-meta">
-          {experience.sector && <span>{experience.sector}</span>}
-          <span>{experience.period}</span>
-        </p>
-      </header>
-
-      <p class="experience-introduction">{experience.introduction}</p>
-
-      <div class="responsibilities">
-        <h4>Responsabilidades</h4>
-        <ul>
-          {experience.responsibilities.map((responsibility) => (
-            <li>{responsibility}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="tools">
-        <h4>Tecnologías y herramientas</h4>
-        <div class="tool-groups">
-          {experience.toolGroups.map((group) => (
-            <div class="tool-group">
-              <h5>{group.category}</h5>
-              <ul aria-label={group.category}>
-                {group.tools.map((tool) => <li>{tool}</li>)}
-              </ul>
-            </div>
-          ))}
+  <div class="experience-timeline">
+    {professionalExperiences.map((experience, index) => (
+      <div class="experience-item">
+        <div class="experience-rail" aria-hidden="true">
+          <span class="experience-node"></span>
+          {index < professionalExperiences.length - 1 && (
+            <span class="experience-connector"></span>
+          )}
         </div>
+
+        <article class="experience-content" aria-labelledby={`experience-role-${index}`}>
+          <header class="experience-header">
+            {experience.eyebrow && <p class="eyebrow">{experience.eyebrow}</p>}
+            <h3 id={`experience-role-${index}`}>{experience.role}</h3>
+            <p class="company-name">{experience.company}</p>
+            <p class="experience-meta">
+              {experience.sector && <span>{experience.sector}</span>}
+              <span>{experience.period}</span>
+            </p>
+          </header>
+
+          <p class="experience-introduction">{experience.introduction}</p>
+
+          <div class="responsibilities">
+            <h4>Responsabilidades</h4>
+            <ul>
+              {experience.responsibilities.map((responsibility) => (
+                <li>{responsibility}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="tools">
+            <h4>Tecnologías y herramientas</h4>
+            <div class="tool-groups">
+              {experience.toolGroups.map((group) => (
+                <div class="tool-group">
+                  <h5>{group.category}</h5>
+                  <ul aria-label={group.category}>
+                    {group.tools.map((tool) => <li>{tool}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
       </div>
-    </article>
-  ))}
+    ))}
+  </div>
 </section>
 
 <style>
@@ -52,8 +63,56 @@ import { professionalExperiences } from '../data/portfolio';
     border-top: 1px solid var(--color-border);
   }
 
-  .experience-entry {
+  .experience-timeline {
+    --timeline-gutter: 2.25rem;
+    --timeline-node-left: 0.75rem;
+    --timeline-line-left: 1.125rem;
+    --timeline-line-bottom: -3.75rem;
+
+    display: grid;
+    gap: 3rem;
     margin-top: 2.5rem;
+  }
+
+  .experience-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--timeline-gutter) minmax(0, 1fr);
+  }
+
+  .experience-rail {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    width: var(--timeline-gutter);
+    pointer-events: none;
+  }
+
+  .experience-node {
+    position: absolute;
+    z-index: 1;
+    top: 0.375rem;
+    left: var(--timeline-node-left);
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  .experience-connector {
+    position: absolute;
+    top: 0.75rem;
+    bottom: var(--timeline-line-bottom);
+    left: var(--timeline-line-left);
+    display: block;
+    border-left: 1px solid rgb(78 128 152 / 58%);
+  }
+
+  .experience-content {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
   }
 
   .experience-header h3 {
@@ -164,6 +223,15 @@ import { professionalExperiences } from '../data/portfolio';
   }
 
   @media (max-width: 34rem) {
+    .experience-timeline {
+      --timeline-gutter: 1.875rem;
+      --timeline-node-left: 0.5625rem;
+      --timeline-line-left: 0.9375rem;
+
+      gap: 2.5rem;
+      --timeline-line-bottom: -3.25rem;
+    }
+
     .experience-meta {
       flex-direction: column;
       gap: 0.15rem;

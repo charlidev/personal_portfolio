@@ -160,7 +160,7 @@ export const pulqueLabsExperience: ProfessionalExperience = {
 export const gerdauCorsaExperience: ProfessionalExperience = {
   role: 'Becario Analista de Logística',
   company: 'Gerdau Corsa',
-  period: '2021 - 2023',
+  period: '2021–2023',
   introduction:
     'Participé en el análisis y seguimiento de operaciones de transporte de carga, procesando información de unidades y transportistas para generar reportes y tableros de control. Utilicé datos provenientes de archivos Excel y plataformas de rastreo GPS para analizar recorridos, entregas y actividad operativa de las unidades.',
   responsibilities: [

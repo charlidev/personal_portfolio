@@ -38,6 +38,15 @@ export interface PortfolioCertification {
   credentialUrl?: string;
 }
 
+export interface PortfolioCourse {
+  platform: string;
+  name: string;
+  type?: string;
+  issuedAt: string;
+  expiration?: string;
+  image: string;
+}
+
 export interface ExperienceToolGroup {
   category: string;
   tools: string[];
@@ -61,7 +70,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     name: 'Plataformas y cloud',
-    items: ['Databricks', 'Snowflake', 'AWS', 'Azure'],
+    items: ['Databricks', 'Snowflake', 'AWS', 'Azure', 'SAP Business Data Cloud'],
   },
   {
     name: 'Bases de datos',
@@ -121,6 +130,87 @@ export const certifications: PortfolioCertification[] = [
     expiration: 'No expira',
     topics: ['Databricks', 'Data Intelligence Platform', 'Data Management Platforms'],
     image: '/images/certifications/databricks-fundamentals.png',
+  },
+];
+
+export const academyCourses: PortfolioCourse[] = [
+  {
+    name: 'SQL Analytics on Databricks',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '5 de julio de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/sql-analytics-on-databricks.png',
+  },
+  {
+    name: 'SQL Programming and Procedural Logic',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '5 de julio de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/sql-programming-procedural-logic.png',
+  },
+  {
+    name: 'Data Modeling Strategies',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '5 de julio de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/data-modeling-strategies.png',
+  },
+  {
+    name: 'DevOps Essentials for Data Engineering',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '7 de octubre de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/devops-data-eng.png',
+  },
+  {
+    name: 'Build Data Pipelines with Lakeflow Spark Declarative Pipelines',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '5 de octubre de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/lakeflow-sdp.png',
+  },
+  {
+    name: 'Deploy Workloads with Lakeflow Jobs',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '27 de septiembre de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/lakeflow-jobs.png',
+  },
+  {
+    name: 'Snowflake University Platform Skills Badge',
+    platform: 'Snowflake',
+    issuedAt: '26 de junio de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/snowflake-platform.png',
+  },
+  {
+    name: 'AI/BI for Data Analysts',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '1 de julio de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/databricks-aibi.png',
+  },
+  {
+    name: 'Data Ingestion with Lakeflow Connect',
+    platform: 'Databricks Academy',
+    type: 'Knowledge Badge',
+    issuedAt: '21 de septiembre de 2026',
+    expiration: 'No expira',
+    image: '/images/courses/lakeflow-connect.png',
+  },
+  {
+    name: 'Introducing SAP Business Data Cloud',
+    platform: 'SAP Learning',
+    type: 'Course Completion - Beginner Level',
+    issuedAt: '28 de septiembre de 2026',
+    image: '/images/courses/sap-bdc-introduction.png',
   },
 ];
 

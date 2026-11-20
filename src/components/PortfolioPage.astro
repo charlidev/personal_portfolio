@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactSection from './ContactSection.astro';
+import EducationSection from './EducationSection.astro';
+import ExperienceSection from './ExperienceSection.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import ProjectsSection from './ProjectsSection.astro';
+import SkillsSection from './SkillsSection.astro';
+import { getCopy, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+---
+
+<BaseLayout locale={locale} title={copy.documentTitle} description={copy.description}>
+  <Header locale={locale} />
+  <main>
+    <Hero locale={locale} />
+    <ExperienceSection locale={locale} />
+    <SkillsSection locale={locale} />
+    <ProjectsSection locale={locale} />
+    <EducationSection locale={locale} />
+    <ContactSection locale={locale} />
+  </main>
+  <footer class="site-footer container">
+    <p>{copy.footer}</p>
+  </footer>
+</BaseLayout>
+
+<style>
+  .site-footer {
+    padding-block: 1.5rem 2.5rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .site-footer p { margin: 0; }
+</style>

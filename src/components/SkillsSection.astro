@@ -1,10 +1,15 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import { skillGroups } from '../data/portfolio';
+import { getCopy, getPortfolioData, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { skillGroups } = getPortfolioData(locale);
 ---
 
 <section id="habilidades" class="content-section container" aria-labelledby="skills-title">
-  <SectionHeading id="skills-title" eyebrow="Herramientas" title="Habilidades" />
+  <SectionHeading id="skills-title" eyebrow={copy.sections.skillsEyebrow} title={copy.sections.skills} />
   <div class="skill-groups">
     {skillGroups.map((group) => (
       <div class="skill-group">

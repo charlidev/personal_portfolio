@@ -1,10 +1,15 @@
 ﻿---
 import SectionHeading from './SectionHeading.astro';
-import { professionalExperiences } from '../data/portfolio';
+import { getCopy, getPortfolioData, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { professionalExperiences } = getPortfolioData(locale);
 ---
 
 <section id="experiencia" class="content-section container" aria-labelledby="experience-title">
-  <SectionHeading id="experience-title" eyebrow="Trayectoria" title="Experiencia" />
+  <SectionHeading id="experience-title" eyebrow={copy.sections.experienceEyebrow} title={copy.sections.experience} />
 
   <div class="experience-timeline">
     {professionalExperiences.map((experience, index) => (
@@ -30,7 +35,7 @@ import { professionalExperiences } from '../data/portfolio';
           <p class="experience-introduction">{experience.introduction}</p>
 
           <div class="responsibilities">
-            <h4>Responsabilidades</h4>
+            <h4>{copy.experienceResponsibilities}</h4>
             <ul>
               {experience.responsibilities.map((responsibility) => (
                 <li>{responsibility}</li>
@@ -39,7 +44,7 @@ import { professionalExperiences } from '../data/portfolio';
           </div>
 
           <div class="tools">
-            <h4>Tecnologías y herramientas</h4>
+            <h4>{copy.experienceTools}</h4>
             <div class="tool-groups">
               {experience.toolGroups.map((group) => (
                 <div class="tool-group">

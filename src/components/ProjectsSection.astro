@@ -1,25 +1,30 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import { projects } from '../data/portfolio';
+import { getCopy, getPortfolioData, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { projects } = getPortfolioData(locale);
 ---
 
 <section id="proyectos" class="content-section container" aria-labelledby="projects-title">
-  <SectionHeading id="projects-title" eyebrow="Trabajo seleccionado" title="Proyectos" />
+  <SectionHeading id="projects-title" eyebrow={copy.sections.projectsEyebrow} title={copy.sections.projects} />
   <div class="project-grid">
     {projects.map((project) => (
       <article class="project">
-        <p class="project-index eyebrow">Proyecto 0{project.number}</p>
+        <p class="project-index eyebrow">{copy.projectPrefix} 0{project.number}</p>
         <h3>{project.title}</h3>
         <p class="project-description">{project.description}</p>
         <p class="project-technologies">
-          <span>Tecnologías:</span> {project.technologies.join(' · ')}
+          <span>{copy.technologies}</span> {project.technologies.join(' · ')}
         </p>
         {project.href ? (
           <a class="project-link" href={project.href}>
-            Ver proyecto <span aria-hidden="true">↗</span>
+            {copy.viewProject} <span aria-hidden="true">↗</span>
           </a>
         ) : (
-          <span class="project-link">Página individual pendiente</span>
+          <span class="project-link">{copy.projectPagePending}</span>
         )}
       </article>
     ))}

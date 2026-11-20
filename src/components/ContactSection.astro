@@ -1,10 +1,15 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import { contactMethods } from '../data/portfolio';
+import { getCopy, getPortfolioData, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { contactMethods } = getPortfolioData(locale);
 ---
 
 <section id="contacto" class="content-section container" aria-labelledby="contact-title">
-  <SectionHeading id="contact-title" eyebrow="Conversemos" title="Contacto" />
+  <SectionHeading id="contact-title" eyebrow={copy.sections.contactEyebrow} title={copy.sections.contact} />
   <ul class="contact-list">
     {contactMethods.map((contact) => (
       <li>

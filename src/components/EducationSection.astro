@@ -1,19 +1,24 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import { academyCourses, certifications, educationEntries } from '../data/portfolio';
+import { getCopy, getPortfolioData, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { academyCourses, certifications, educationEntries } = getPortfolioData(locale);
 ---
 
-<section id="formacion" class="content-section container" aria-labelledby="education-title">
+<section id="formacion" class="content-section container" aria-labelledby="education-title" data-locale={locale}>
   <SectionHeading
     id="education-title"
-    eyebrow="Aprendizaje"
-    title="Formación y certificaciones"
+    eyebrow={copy.sections.educationEyebrow}
+    title={copy.sections.education}
   />
   <div class="education-content">
     <section class="learning-section academic-group" aria-labelledby="academic-title">
       <span class="section-accent" aria-hidden="true"></span>
       <div class="learning-section-body">
-        <h3 id="academic-title" class="academic-heading">Formación académica</h3>
+        <h3 id="academic-title" class="academic-heading">{copy.education}</h3>
         <ol class="education-list">
           {educationEntries.map((entry, index) => (
             <li class:list={['education-entry', index === 0 && 'featured']}>
@@ -38,33 +43,33 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
       <section class="learning-section certifications-group" aria-labelledby="certifications-title">
         <span class="section-accent" aria-hidden="true"></span>
         <div class="learning-section-body">
-          <h3 id="certifications-title" class="additional-heading">Certificaciones</h3>
+          <h3 id="certifications-title" class="additional-heading">{copy.certifications}</h3>
           <ul class="certification-list">
             {certifications.map((certification) => (
               <li class="certification-card">
                 <img
                   class="certification-image"
                   src={certification.image}
-                  alt={`Insignia ${certification.name} de ${certification.issuer}`}
+                  alt={locale === 'en' ? `${certification.name} badge from ${certification.issuer}` : `Insignia ${certification.name} de ${certification.issuer}`}
                   loading="lazy"
                 />
                 <div class="certification-content">
                   <p class="certification-issuer">{certification.issuer}</p>
                   <h4>{certification.name}</h4>
-                  <p class="certification-holder">Titular: {certification.holder}</p>
+                  <p class="certification-holder">{copy.credentialHolder}: {certification.holder}</p>
 
                   <dl class="certification-meta">
                     <div>
-                      <dt>Fecha de emisión</dt>
+                      <dt>{copy.issuedOn}</dt>
                       <dd>{certification.issuedAt}</dd>
                     </div>
                     <div>
-                      <dt>Vigencia</dt>
+                      <dt>{copy.validity}</dt>
                       <dd>{certification.expiration}</dd>
                     </div>
                   </dl>
 
-                  <ul class="certification-topics" aria-label="Conocimientos asociados">
+                  <ul class="certification-topics" aria-label={copy.associatedKnowledge}>
                     {certification.topics.map((topic) => <li>{topic}</li>)}
                   </ul>
                 </div>
@@ -78,13 +83,15 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
         <span class="section-accent" aria-hidden="true"></span>
         <div class="learning-section-body">
           <div class="course-heading-row">
-            <h3 id="courses-title" class="additional-heading">Cursos</h3>
+            <h3 id="courses-title" class="additional-heading">{copy.courses}</h3>
             <button
               class="carousel-playback is-playing"
               type="button"
-              aria-label="Pausar reproducción automática"
+              aria-label={copy.pauseAutoplay}
               aria-controls="course-carousel-viewport"
               data-carousel-playback
+              data-pause-label={copy.pauseAutoplay}
+              data-resume-label={copy.resumeAutoplay}
             >
               <svg data-pause-icon viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M5 3.25v9.5M11 3.25v9.5" />
@@ -99,7 +106,7 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
               class="carousel-arrow"
               type="button"
               data-carousel-previous
-              aria-label="Cursos anteriores"
+              aria-label={copy.previousCourses}
               aria-controls="course-carousel-viewport"
             >
               <span aria-hidden="true">‹</span>
@@ -109,23 +116,23 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
               id="course-carousel-viewport"
               class="course-carousel-viewport"
               role="region"
-              aria-roledescription="carrusel"
-              aria-label="Cursos de Databricks Academy"
+              aria-roledescription={copy.courseCarouselRole}
+              aria-label={copy.courseCarousel}
               tabindex="0"
               data-carousel-viewport
             >
-              <ul class="course-track" aria-label="Cursos de Databricks Academy">
+              <ul class="course-track" aria-label={copy.courseCarousel}>
                 {academyCourses.map((course, index) => (
                   <li
                     class="course-card"
                     role="group"
-                    aria-roledescription="tarjeta de curso"
-                    aria-label={`Curso ${index + 1} de ${academyCourses.length}`}
+                    aria-roledescription={copy.courseCardRole}
+                    aria-label={`${copy.course} ${index + 1} ${locale === 'en' ? 'of' : 'de'} ${academyCourses.length}`}
                   >
                     <div class="course-badge-area">
                       <img
                         src={course.image}
-                        alt={`Insignia ${course.name} de ${course.platform}`}
+                        alt={locale === 'en' ? `${course.name} badge from ${course.platform}` : `Insignia ${course.name} de ${course.platform}`}
                         loading="lazy"
                       />
                     </div>
@@ -134,7 +141,7 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
                       <h4>{course.name}</h4>
                       <dl class="course-meta">
                         <div>
-                          <dt>Fecha de emisión</dt>
+                          <dt>{copy.issuedOn}</dt>
                           <dd>{course.issuedAt}</dd>
                         </div>
                       </dl>
@@ -148,7 +155,7 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
               class="carousel-arrow"
               type="button"
               data-carousel-next
-              aria-label="Cursos siguientes"
+              aria-label={copy.nextCourses}
               aria-controls="course-carousel-viewport"
             >
               <span aria-hidden="true">›</span>
@@ -157,7 +164,7 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
             <div
               class="carousel-indicators"
               role="group"
-              aria-label="Seleccionar grupo de cursos"
+              aria-label={copy.selectCourseGroup}
               data-carousel-indicators
             ></div>
           </div>
@@ -170,6 +177,11 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
 
 ﻿<script>
   for (const carousel of document.querySelectorAll<HTMLElement>('[data-course-carousel]')) {
+    const locale = carousel.closest<HTMLElement>('[data-locale]')?.dataset.locale ?? 'es';
+    const courseLabel = locale === 'en' ? 'Course' : 'Curso';
+    const groupLabel = locale === 'en' ? 'Show group' : 'Mostrar grupo';
+    const ofLabel = locale === 'en' ? 'of' : 'de';
+    const groupOfLabel = locale === 'en' ? 'Group' : 'Grupo';
     const viewport = carousel.querySelector<HTMLElement>('[data-carousel-viewport]');
     const previousButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-previous]');
     const nextButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
@@ -243,7 +255,7 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'carousel-indicator';
-        button.setAttribute('aria-label', `Mostrar grupo ${index + 1} de ${pageCount}`);
+        button.setAttribute('aria-label', `${groupLabel} ${index + 1} ${ofLabel} ${pageCount}`);
         button.setAttribute('aria-controls', viewport.id);
         button.dataset.page = String(index);
 
@@ -269,11 +281,11 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
       }
 
       getOrderedCards().forEach((card, index) => {
-        card.setAttribute('aria-label', `Curso ${index + 1} de ${cards.length}`);
+        card.setAttribute('aria-label', `${courseLabel} ${index + 1} ${ofLabel} ${cards.length}`);
       });
 
       if (announce) {
-        status.textContent = `Curso ${currentIndex + 1} de ${cards.length}. Grupo ${page + 1} de ${pageCount}.`;
+        status.textContent = `${courseLabel} ${currentIndex + 1} ${ofLabel} ${cards.length}. ${groupOfLabel} ${page + 1} ${ofLabel} ${pageCount}.`;
       }
     };
 
@@ -300,7 +312,9 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
       const isRequested = autoPlayRequested && !userPaused;
       playbackButton.setAttribute(
         'aria-label',
-        isRequested ? 'Pausar reproducción automática' : 'Reanudar reproducción automática',
+        isRequested
+          ? playbackButton.dataset.pauseLabel ?? 'Pausar reproducción automática'
+          : playbackButton.dataset.resumeLabel ?? 'Reanudar reproducción automática',
       );
       playbackButton.classList.toggle('is-playing', isRequested);
     };

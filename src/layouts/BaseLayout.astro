@@ -1,24 +1,33 @@
 ---
 import '../styles/global.css';
+import type { Locale } from '../i18n';
 
 interface Props {
+  locale: Locale;
   title?: string;
   description?: string;
 }
 
 const {
-  title = 'Portafolio | Ingeniería de Datos',
-  description = 'Portafolio profesional de Ingeniería de Datos. Contenido en preparación.',
+  locale,
+  title,
+  description,
 } = Astro.props;
+const isEnglish = locale === 'en';
+const canonicalPath = isEnglish ? '/en/' : '/';
 ---
 
 <!doctype html>
-<html lang="es-MX">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#092327" />
+    <link rel="canonical" href={canonicalPath} />
+    <link rel="alternate" hreflang="es" href="/" />
+    <link rel="alternate" hreflang="en" href="/en/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
     <title>{title}</title>
   </head>
   <body>

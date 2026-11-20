@@ -300,7 +300,38 @@ export const gerdauCorsaExperience: ProfessionalExperience = {
   ],
 };
 
+export const expertosBackOficceExperience: ProfessionalExperience = {
+  role: 'Analista de Datos',
+  company: 'Expertos de Back Oficce',
+  period: '2023 - 2025',
+  introduction:
+    'Participación en el análisis y procesamiento de información operativa de distintas áreas de la organización, mediante la consolidación, clasificación y actualización de registros en Excel y Bases de Datos SQL. Elaboración de reportes estadísticos, indicadores operativos y presentaciones ejecutivas para facilitar el seguimiento de la disponibilidad de infraestructura de videovigilancia y las incidencias reportadas en las operaciones logísticas.',
+  responsibilities: [
+    'Extracción y procesamiento de reportes de la plataforma de administración de videovigilancia para analizar el estado operativo de las cámaras, clasificando los dispositivos activos e inactivos.',
+    'Consolidación de información sobre disponibilidad de cámaras mediante tablas de Excel y elaboración de reportes ejecutivos para responsables de área y mandos gerenciales.',
+    'Registro y clasificación de incidencias reportadas por transportistas mediante llamadas telefónicas, estructurando la información por identificador, motivo de la queja y área involucrada.',
+    'Análisis de incidencias logísticas mediante la agrupación y contabilización de reportes por área operativa, incluyendo báscula, patio de chatarra y seguridad intramuros.',
+    'Desarrollo y actualización de reportes gráficos en Excel para visualizar la distribución de incidencias y comunicar resultados a los responsables de las áreas mediante tableros de Power BI.',
+    'Mantenimiento y actualización recurrente de registros operativos provenientes de distintas fuentes, realizando actividades de organización, clasificación, depuración y preparación de datos para su posterior análisis.',
+  ],
+  toolGroups: [
+    {
+      category: 'Análisis y reportes',
+      tools: ['Microsoft Excel', 'Power BI'],
+    },
+    {
+      category: 'Fuentes de información y monitoreo',
+      tools: ['Plataforma ExaqVision', 'UNIGIS'],
+    },
+    {
+      category: 'Lenguajes de programación',
+      tools: ['SQL', 'Python'],
+    },
+  ],
+};
+
 export const professionalExperiences: ProfessionalExperience[] = [
+  expertosBackOficceExperience,
   gerdauCorsaExperience,
   pulqueLabsExperience,
 ];

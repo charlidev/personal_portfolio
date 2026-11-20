@@ -527,6 +527,10 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
   }
 
   .education-content {
+    --learning-section-gap: clamp(6rem, 13vw, 10rem);
+
+    display: grid;
+    row-gap: var(--learning-section-gap);
     margin-top: 2.5rem;
   }
 
@@ -556,8 +560,8 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
 
   .additional-learning {
     display: grid;
-    gap: 1.5rem;
-    margin: 2.5rem 0 0;
+    gap: var(--learning-section-gap);
+    margin: 0;
   }
 
   .additional-heading {
@@ -1016,6 +1020,10 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
   }
 
   @media (max-width: 38rem) {
+    .education-content {
+      --learning-section-gap: 4rem;
+    }
+
     .course-carousel {
       grid-template-columns: 2rem minmax(0, 1fr) 2rem;
       column-gap: 0.5rem;

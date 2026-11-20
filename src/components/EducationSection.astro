@@ -1,23 +1,538 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import { educationEntries } from '../data/portfolio';
+import { getCopy, getPortfolioData, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { academyCourses, certifications, educationEntries } = getPortfolioData(locale);
 ---
 
-<section id="formacion" class="content-section container" aria-labelledby="education-title">
+<section id="formacion" class="content-section container" aria-labelledby="education-title" data-locale={locale}>
   <SectionHeading
     id="education-title"
-    eyebrow="Aprendizaje"
-    title="Certificaciones y formación"
+    eyebrow={copy.sections.educationEyebrow}
+    title={copy.sections.education}
   />
-  <ul class="education-list">
-    {educationEntries.map((entry) => (
-      <li>
-        <span>{entry}</span>
-        <span class="pending">[Contenido pendiente]</span>
-      </li>
-    ))}
-  </ul>
+  <div class="education-content">
+    <section class="learning-section academic-group" aria-labelledby="academic-title">
+      <span class="section-accent" aria-hidden="true"></span>
+      <div class="learning-section-body">
+        <h3 id="academic-title" class="academic-heading">{copy.education}</h3>
+        <ol class="education-list">
+          {educationEntries.map((entry, index) => (
+            <li class:list={['education-entry', index === 0 && 'featured']}>
+              <div class="education-copy">
+                <p class="education-level">{entry.level}</p>
+                <h4>{entry.institution}</h4>
+                <div class="program-row">
+                  <p class="program">{entry.program}</p>
+                  {entry.status && <span class="status">{entry.status}</span>}
+                </div>
+              </div>
+              <div class="education-meta">
+                <span class="period">{entry.period}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <div class="additional-learning">
+      <section class="learning-section certifications-group" aria-labelledby="certifications-title">
+        <span class="section-accent" aria-hidden="true"></span>
+        <div class="learning-section-body">
+          <h3 id="certifications-title" class="additional-heading">{copy.certifications}</h3>
+          <ul class="certification-list">
+            {certifications.map((certification) => (
+              <li class="certification-card">
+                <img
+                  class="certification-image"
+                  src={certification.image}
+                  alt={locale === 'en' ? `${certification.name} badge from ${certification.issuer}` : `Insignia ${certification.name} de ${certification.issuer}`}
+                  loading="lazy"
+                />
+                <div class="certification-content">
+                  <p class="certification-issuer">{certification.issuer}</p>
+                  <h4>{certification.name}</h4>
+                  <p class="certification-holder">{copy.credentialHolder}: {certification.holder}</p>
+
+                  <dl class="certification-meta">
+                    <div>
+                      <dt>{copy.issuedOn}</dt>
+                      <dd>{certification.issuedAt}</dd>
+                    </div>
+                    <div>
+                      <dt>{copy.validity}</dt>
+                      <dd>{certification.expiration}</dd>
+                    </div>
+                  </dl>
+
+                  <ul class="certification-topics" aria-label={copy.associatedKnowledge}>
+                    {certification.topics.map((topic) => <li>{topic}</li>)}
+                  </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section class="learning-section courses-group" aria-labelledby="courses-title">
+        <span class="section-accent" aria-hidden="true"></span>
+        <div class="learning-section-body">
+          <div class="course-heading-row">
+            <h3 id="courses-title" class="additional-heading">{copy.courses}</h3>
+            <button
+              class="carousel-playback is-playing"
+              type="button"
+              aria-label={copy.pauseAutoplay}
+              aria-controls="course-carousel-viewport"
+              data-carousel-playback
+              data-pause-label={copy.pauseAutoplay}
+              data-resume-label={copy.resumeAutoplay}
+            >
+              <svg data-pause-icon viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M5 3.25v9.5M11 3.25v9.5" />
+              </svg>
+              <svg data-play-icon viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M5 3.25v9.5L12.5 8 5 3.25Z" />
+              </svg>
+            </button>
+          </div>
+          <div class="course-carousel" data-course-carousel>
+            <button
+              class="carousel-arrow"
+              type="button"
+              data-carousel-previous
+              aria-label={copy.previousCourses}
+              aria-controls="course-carousel-viewport"
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+
+            <div
+              id="course-carousel-viewport"
+              class="course-carousel-viewport"
+              role="region"
+              aria-roledescription={copy.courseCarouselRole}
+              aria-label={copy.courseCarousel}
+              tabindex="0"
+              data-carousel-viewport
+            >
+              <ul class="course-track" aria-label={copy.courseCarousel}>
+                {academyCourses.map((course, index) => (
+                  <li
+                    class="course-card"
+                    role="group"
+                    aria-roledescription={copy.courseCardRole}
+                    aria-label={`${copy.course} ${index + 1} ${locale === 'en' ? 'of' : 'de'} ${academyCourses.length}`}
+                  >
+                    <div class="course-badge-area">
+                      <img
+                        src={course.image}
+                        alt={locale === 'en' ? `${course.name} badge from ${course.platform}` : `Insignia ${course.name} de ${course.platform}`}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div class="course-card-content">
+                      <p class="course-platform">{course.platform}</p>
+                      <h4>{course.name}</h4>
+                      <dl class="course-meta">
+                        <div>
+                          <dt>{copy.issuedOn}</dt>
+                          <dd>{course.issuedAt}</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <button
+              class="carousel-arrow"
+              type="button"
+              data-carousel-next
+              aria-label={copy.nextCourses}
+              aria-controls="course-carousel-viewport"
+            >
+              <span aria-hidden="true">›</span>
+            </button>
+
+            <div
+              class="carousel-indicators"
+              role="group"
+              aria-label={copy.selectCourseGroup}
+              data-carousel-indicators
+            ></div>
+          </div>
+          <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-carousel-status></p>
+        </div>
+      </section>
+    </div>
+  </div>
 </section>
+
+﻿<script>
+  for (const carousel of document.querySelectorAll<HTMLElement>('[data-course-carousel]')) {
+    const locale = carousel.closest<HTMLElement>('[data-locale]')?.dataset.locale ?? 'es';
+    const courseLabel = locale === 'en' ? 'Course' : 'Curso';
+    const groupLabel = locale === 'en' ? 'Show group' : 'Mostrar grupo';
+    const ofLabel = locale === 'en' ? 'of' : 'de';
+    const groupOfLabel = locale === 'en' ? 'Group' : 'Grupo';
+    const viewport = carousel.querySelector<HTMLElement>('[data-carousel-viewport]');
+    const previousButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-previous]');
+    const nextButton = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const indicators = carousel.querySelector<HTMLElement>('[data-carousel-indicators]');
+    const playbackButton = carousel.parentElement?.querySelector<HTMLButtonElement>('[data-carousel-playback]');
+    const pauseIcon = playbackButton?.querySelector<SVGElement>('[data-pause-icon]');
+    const playIcon = playbackButton?.querySelector<SVGElement>('[data-play-icon]');
+    const status = carousel.parentElement?.querySelector<HTMLElement>('[data-carousel-status]');
+    const track = carousel.querySelector<HTMLElement>('.course-track');
+    const cards = Array.from(carousel.querySelectorAll<HTMLElement>('.course-card'));
+
+    if (
+      !viewport || !previousButton || !nextButton || !indicators || !playbackButton ||
+      !pauseIcon || !playIcon || !status || !track || cards.length === 0
+    ) {
+      continue;
+    }
+    const courseTrack = track;
+    const interactionRoot = carousel.parentElement ?? carousel;
+
+    let currentPageCount = 0;
+    let currentIndex = 0;
+    let autoPlayRequested = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let userPaused = false;
+    let isHovered = false;
+    let hasFocus = false;
+    let isInView = false;
+    let isAnimating = false;
+    let activeDirection: -1 | 1 = 1;
+    let pendingAnnouncement = false;
+    let pendingNavigationIndex: number | null = null;
+    let autoPlayTimeout = 0;
+    let animationFallbackTimeout = 0;
+    let firstAnimationFrame = 0;
+    let secondAnimationFrame = 0;
+    let pageActive = true;
+    let pointerStart: { x: number; y: number } | null = null;
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const getVisibleCount = () => {
+      const value = Number.parseInt(
+        getComputedStyle(viewport).getPropertyValue('--courses-visible'),
+        10,
+      );
+      return Number.isFinite(value) && value > 0 ? value : 1;
+    };
+
+    const getPageCount = () => Math.max(1, Math.ceil(cards.length / getVisibleCount()));
+    const getOrderedCards = () => Array.from(courseTrack.querySelectorAll<HTMLElement>('.course-card'));
+    const getCurrentPage = () => Math.floor(currentIndex / getVisibleCount());
+    const updateCourseGeometry = () => {
+      const visibleCount = getVisibleCount();
+      const gap = Number.parseFloat(getComputedStyle(courseTrack).columnGap) || 0;
+      const cardWidth = (viewport.clientWidth - gap * (visibleCount - 1)) / visibleCount;
+      courseTrack.style.setProperty('--course-card-width', `${cardWidth}px`);
+    };
+    const getStepSize = () => {
+      const card = track.querySelector<HTMLElement>('.course-card');
+      const gap = Number.parseFloat(getComputedStyle(courseTrack).columnGap) || 0;
+      return (card?.getBoundingClientRect().width ?? 0) + gap;
+    };
+
+    const renderIndicators = () => {
+      const pageCount = getPageCount();
+      if (pageCount === currentPageCount) return;
+
+      currentPageCount = pageCount;
+      indicators.replaceChildren();
+
+      for (let index = 0; index < pageCount; index += 1) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'carousel-indicator';
+        button.setAttribute('aria-label', `${groupLabel} ${index + 1} ${ofLabel} ${pageCount}`);
+        button.setAttribute('aria-controls', viewport.id);
+        button.dataset.page = String(index);
+
+        const dot = document.createElement('span');
+        dot.setAttribute('aria-hidden', 'true');
+        button.append(dot);
+        button.addEventListener('click', () => navigateManuallyTo(index * getVisibleCount()));
+        indicators.append(button);
+      }
+    };
+
+    const updateControls = (announce = false) => {
+      renderIndicators();
+      const page = getCurrentPage();
+      const pageCount = getPageCount();
+
+      previousButton.disabled = cards.length <= 1;
+      nextButton.disabled = cards.length <= 1;
+
+      for (const button of indicators.querySelectorAll<HTMLButtonElement>('.carousel-indicator')) {
+        if (Number(button.dataset.page) === page) button.setAttribute('aria-current', 'page');
+        else button.removeAttribute('aria-current');
+      }
+
+      getOrderedCards().forEach((card, index) => {
+        card.setAttribute('aria-label', `${courseLabel} ${index + 1} ${ofLabel} ${cards.length}`);
+      });
+
+      if (announce) {
+        status.textContent = `${courseLabel} ${currentIndex + 1} ${ofLabel} ${cards.length}. ${groupOfLabel} ${page + 1} ${ofLabel} ${pageCount}.`;
+      }
+    };
+
+    const clearAutoPlayTimeout = () => {
+      window.clearTimeout(autoPlayTimeout);
+      autoPlayTimeout = 0;
+    };
+
+    const canAutoPlay = () =>
+      autoPlayRequested && !userPaused && !isHovered && !hasFocus &&
+      !document.hidden && isInView && pageActive;
+
+    const scheduleAutoPlay = () => {
+      clearAutoPlayTimeout();
+      if (!canAutoPlay() || isAnimating || pendingNavigationIndex !== null) return;
+
+      autoPlayTimeout = window.setTimeout(() => {
+        autoPlayTimeout = 0;
+        if (canAutoPlay() && !isAnimating) startMove(1, false);
+      }, 2000);
+    };
+
+    const updatePlaybackControl = () => {
+      const isRequested = autoPlayRequested && !userPaused;
+      playbackButton.setAttribute(
+        'aria-label',
+        isRequested
+          ? playbackButton.dataset.pauseLabel ?? 'Pausar reproducción automática'
+          : playbackButton.dataset.resumeLabel ?? 'Reanudar reproducción automática',
+      );
+      playbackButton.classList.toggle('is-playing', isRequested);
+    };
+
+    const pauseManually = () => {
+      userPaused = true;
+      pendingNavigationIndex = null;
+      clearAutoPlayTimeout();
+      if (isAnimating) completeMove();
+      updatePlaybackControl();
+    };
+
+    const startMove = (direction: -1 | 1, announce: boolean) => {
+      if (isAnimating || cards.length <= 1) return;
+
+      isAnimating = true;
+      activeDirection = direction;
+      pendingAnnouncement ||= announce;
+      currentIndex = (currentIndex + direction + cards.length) % cards.length;
+      const stepSize = getStepSize();
+
+      courseTrack.classList.add('is-reordering');
+      if (direction < 0) {
+        const lastCard = courseTrack.lastElementChild;
+        if (lastCard) courseTrack.insertBefore(lastCard, courseTrack.firstElementChild);
+        courseTrack.style.setProperty('--course-offset', `${-stepSize}px`);
+        void courseTrack.offsetWidth;
+      }
+
+      firstAnimationFrame = requestAnimationFrame(() => {
+        firstAnimationFrame = 0;
+        if (!pageActive) return;
+        courseTrack.classList.remove('is-reordering');
+        secondAnimationFrame = requestAnimationFrame(() => {
+          secondAnimationFrame = 0;
+          if (!pageActive) return;
+          courseTrack.style.setProperty('--course-offset', direction > 0 ? `${-stepSize}px` : '0px');
+          window.clearTimeout(animationFallbackTimeout);
+          animationFallbackTimeout = window.setTimeout(completeMove, reducedMotionQuery.matches ? 0 : 450);
+        });
+      });
+    };
+
+    function completeMove() {
+      if (!isAnimating) return;
+      window.clearTimeout(animationFallbackTimeout);
+      animationFallbackTimeout = 0;
+
+      courseTrack.classList.add('is-reordering');
+      if (activeDirection > 0) {
+        const firstCard = courseTrack.firstElementChild;
+        if (firstCard) courseTrack.append(firstCard);
+      }
+      courseTrack.style.setProperty('--course-offset', '0px');
+      void courseTrack.offsetWidth;
+      isAnimating = false;
+      updateControls();
+
+      if (pendingNavigationIndex !== null && currentIndex !== pendingNavigationIndex) {
+        courseTrack.classList.remove('is-reordering');
+        const forwardSteps = (pendingNavigationIndex - currentIndex + cards.length) % cards.length;
+        const backwardSteps = (currentIndex - pendingNavigationIndex + cards.length) % cards.length;
+        startMove(forwardSteps <= backwardSteps ? 1 : -1, true);
+        return;
+      }
+
+      courseTrack.classList.remove('is-reordering');
+      pendingNavigationIndex = null;
+      if (pendingAnnouncement) updateControls(true);
+      pendingAnnouncement = false;
+      scheduleAutoPlay();
+    }
+
+    const navigateManuallyTo = (targetIndex: number) => {
+      pauseManually();
+      const boundedIndex = Math.max(0, Math.min(cards.length - 1, targetIndex));
+      pendingNavigationIndex = boundedIndex;
+      pendingAnnouncement = true;
+
+      if (isAnimating) return;
+      if (currentIndex === boundedIndex) {
+        pendingNavigationIndex = null;
+        updateControls(true);
+        return;
+      }
+
+      const forwardSteps = (boundedIndex - currentIndex + cards.length) % cards.length;
+      const backwardSteps = (currentIndex - boundedIndex + cards.length) % cards.length;
+      startMove(forwardSteps <= backwardSteps ? 1 : -1, true);
+    };
+
+    const manualStep = (direction: -1 | 1) => {
+      pauseManually();
+      if (isAnimating) return;
+      pendingNavigationIndex = null;
+      pendingAnnouncement = true;
+      startMove(direction, true);
+    };
+
+    const updateIndicatorsForResize = () => {
+      if (isAnimating) completeMove();
+      updateCourseGeometry();
+      currentPageCount = 0;
+      renderIndicators();
+      updateControls();
+    };
+
+    previousButton.addEventListener('click', () => manualStep(-1));
+    nextButton.addEventListener('click', () => manualStep(1));
+    playbackButton.addEventListener('click', () => {
+      if (autoPlayRequested && !userPaused) {
+        userPaused = true;
+        clearAutoPlayTimeout();
+        if (isAnimating) completeMove();
+      }
+      else {
+        autoPlayRequested = true;
+        userPaused = false;
+        if (document.activeElement === playbackButton) hasFocus = false;
+      }
+      updatePlaybackControl();
+      scheduleAutoPlay();
+    });
+
+    viewport.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        manualStep(-1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        manualStep(1);
+      }
+    });
+
+    viewport.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'mouse') pointerStart = { x: event.clientX, y: event.clientY };
+    });
+    viewport.addEventListener('pointerup', (event) => {
+      if (!pointerStart) return;
+      const deltaX = event.clientX - pointerStart.x;
+      const deltaY = event.clientY - pointerStart.y;
+      pointerStart = null;
+      if (Math.abs(deltaX) >= 45 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        manualStep(deltaX < 0 ? 1 : -1);
+      }
+    });
+    viewport.addEventListener('pointercancel', () => { pointerStart = null; });
+
+    interactionRoot.addEventListener('pointerenter', () => {
+      isHovered = true;
+      clearAutoPlayTimeout();
+    });
+    interactionRoot.addEventListener('pointerleave', () => {
+      isHovered = false;
+      scheduleAutoPlay();
+    });
+    interactionRoot.addEventListener('focusin', () => {
+      hasFocus = true;
+      clearAutoPlayTimeout();
+    });
+    interactionRoot.addEventListener('focusout', (event) => {
+      if (event.relatedTarget instanceof Node && interactionRoot.contains(event.relatedTarget)) return;
+      requestAnimationFrame(() => {
+        hasFocus = interactionRoot.contains(document.activeElement);
+        scheduleAutoPlay();
+      });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) clearAutoPlayTimeout();
+      else scheduleAutoPlay();
+    });
+    reducedMotionQuery.addEventListener('change', (event) => {
+      if (event.matches) {
+        autoPlayRequested = false;
+        userPaused = false;
+        clearAutoPlayTimeout();
+        if (isAnimating) completeMove();
+      } else if (!userPaused) {
+        autoPlayRequested = true;
+        scheduleAutoPlay();
+      }
+      updatePlaybackControl();
+    });
+    window.addEventListener('resize', updateIndicatorsForResize);
+    window.addEventListener('pagehide', () => {
+      pageActive = false;
+      clearAutoPlayTimeout();
+      window.clearTimeout(animationFallbackTimeout);
+      pendingNavigationIndex = null;
+      if (isAnimating) completeMove();
+      window.cancelAnimationFrame(firstAnimationFrame);
+      window.cancelAnimationFrame(secondAnimationFrame);
+      firstAnimationFrame = 0;
+      secondAnimationFrame = 0;
+      observer.disconnect();
+    });
+    window.addEventListener('pageshow', () => {
+      pageActive = true;
+      observer.observe(carousel);
+      scheduleAutoPlay();
+    });
+
+    courseTrack.addEventListener('transitionend', (event) => {
+      if (event.target === courseTrack && event.propertyName === 'transform') completeMove();
+    });
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isInView = entry.isIntersecting;
+      if (isInView) scheduleAutoPlay();
+      else clearAutoPlayTimeout();
+    });
+    observer.observe(carousel);
+    updatePlaybackControl();
+    updateCourseGeometry();
+    updateControls(true);
+  }
+</script>
 
 <style>
   .content-section {
@@ -25,33 +540,561 @@ import { educationEntries } from '../data/portfolio';
     border-top: 1px solid var(--color-border);
   }
 
+  .education-content {
+    --learning-section-gap: clamp(6rem, 13vw, 10rem);
+
+    display: grid;
+    row-gap: var(--learning-section-gap);
+    margin-top: 2.5rem;
+  }
+
+  .learning-section {
+    display: grid;
+    grid-template-columns: 4px minmax(0, 1fr);
+    align-items: stretch;
+    column-gap: 1rem;
+  }
+
+  .learning-section-body {
+    min-width: 0;
+  }
+
+  .section-accent {
+    display: block;
+    width: 4px;
+    align-self: stretch;
+    border-radius: 2px;
+    background: #00a9a5;
+  }
+
   .education-list {
-    margin: 2.5rem 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .education-list li {
+  .additional-learning {
+    display: grid;
+    gap: var(--learning-section-gap);
+    margin: 0;
+  }
+
+  .additional-heading {
+    margin: 0 0 1rem;
+    font-size: var(--text-xl);
+    font-weight: 550;
+  }
+
+  .certification-list {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .certification-card {
+    display: grid;
+    grid-template-columns: clamp(5.5rem, 12vw, 8rem) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2rem);
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: rgb(11 83 81 / 18%);
+  }
+
+  .certification-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    align-self: center;
+    justify-self: center;
+    object-fit: contain;
+  }
+
+  .certification-content {
+    min-width: 0;
+  }
+
+  .certification-issuer {
+    margin: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .certification-content h4 {
+    margin: 0.45rem 0 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .certification-holder {
+    margin: 0.5rem 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .certification-meta {
     display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    margin: 1rem 0 0;
+  }
+
+  .certification-meta div {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .certification-meta dt {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .certification-meta dd {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .certification-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .certification-topics li {
+    padding: 0.25rem 0.55rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-highlight);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+  }
+
+  .course-carousel {
+    --course-gap: 1rem;
+
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) 2.5rem;
+    align-items: center;
+    column-gap: 0.75rem;
+  }
+
+  .course-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .carousel-playback {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+    place-items: center;
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 0.55rem;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+
+  .carousel-playback:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .carousel-playback:focus-visible {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 3px;
+  }
+
+  .carousel-playback svg {
+    display: none;
+    width: 0.9rem;
+    height: 0.9rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
+  }
+
+  .carousel-playback [data-play-icon] {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .carousel-playback.is-playing [data-pause-icon],
+  .carousel-playback:not(.is-playing) [data-play-icon] {
+    display: block;
+  }
+
+  .course-carousel-viewport {
+    --courses-visible: 3;
+
+    min-width: 0;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .course-track {
+    display: flex;
+    gap: var(--course-gap);
+    width: max-content;
+    margin: 0;
+    padding: 0 0 0.75rem;
+    list-style: none;
+    transform: translate3d(var(--course-offset, 0px), 0, 0);
+    transition: transform 350ms ease;
+    will-change: transform;
+  }
+
+  .course-track.is-reordering {
+    transition: none;
+  }
+
+  .course-card {
+    display: grid;
+    flex: 0 0 var(--course-card-width);
+    grid-template-rows: 11rem minmax(0, 1fr);
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    background: rgb(11 83 81 / 18%);
+  }
+
+  .course-badge-area {
+    display: grid;
+    min-height: 11rem;
+    place-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    background: rgb(11 83 81 / 35%);
+  }
+
+  .course-badge-area img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 9rem;
+    object-fit: contain;
+  }
+
+  .course-card-content {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.1rem 1.15rem;
+    text-align: center;
+  }
+
+  .course-platform {
+    margin: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .course-card-content h4 {
+    margin: 0.45rem 0 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  .course-meta {
+    display: grid;
+    width: 100%;
+    margin: 0.9rem 0 0;
+  }
+
+  .course-meta div {
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
+    text-align: center;
+  }
+
+  .course-meta dt {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .course-meta dd {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+
+  .carousel-arrow {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .carousel-arrow span {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .carousel-arrow:hover:not(:disabled) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .carousel-arrow:disabled {
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .carousel-indicators {
+    display: flex;
+    grid-column: 2;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+  }
+
+  .carousel-indicator {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .carousel-indicator span {
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--color-secondary);
+  }
+
+  .carousel-indicator[aria-current='page'] span {
+    background: var(--color-accent);
+  }
+
+  .carousel-arrow:focus-visible,
+  .carousel-indicator:focus-visible,
+  .course-carousel-viewport:focus-visible {
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 3px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .course-track {
+      transition-duration: 0ms !important;
+    }
+  }
+
+  .academic-group {
+    margin-top: 0;
+  }
+
+  .academic-heading {
+    margin: 0 0 0.5rem;
+    color: var(--color-text);
+    font-size: var(--text-xl);
+    font-weight: 550;
+  }
+
+  .education-list {
+    margin: 0;
+  }
+
+  .education-entry {
+    display: flex;
+    align-items: flex-start;
     justify-content: space-between;
     gap: var(--component-gap);
-    padding-block: 1rem;
+    padding-block: 1.5rem;
+  }
+
+  .education-entry.featured {
+    padding-block: 1.75rem;
+  }
+
+  .education-list > .education-entry:first-child {
     border-bottom: 1px solid var(--color-border);
   }
 
-  .pending {
+  .education-copy {
+    min-width: 0;
+  }
+
+  .education-level {
+    margin: 0 0 0.35rem;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .education-copy h4 {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: 550;
+    line-height: 1.4;
+  }
+
+  .featured .education-copy h4 {
+    font-size: var(--text-xl);
+  }
+
+  .program-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .program {
+    margin: 0.4rem 0 0;
     color: var(--color-text-muted);
-    text-align: right;
+    font-size: var(--text-sm);
+  }
+
+  .education-meta {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.1rem;
+  }
+
+  .period {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  .status {
+    padding: 0.1rem 0.55rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-highlight);
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 56rem) {
+    .course-carousel-viewport {
+      --courses-visible: 2;
+    }
+
   }
 
   @media (max-width: 38rem) {
-    .education-list li {
-      flex-direction: column;
-      gap: 0.25rem;
+    .education-content {
+      --learning-section-gap: 4rem;
     }
 
-    .pending {
-      text-align: left;
+    .course-carousel {
+      grid-template-columns: 2rem minmax(0, 1fr) 2rem;
+      column-gap: 0.5rem;
+    }
+
+    .course-carousel-viewport {
+      --courses-visible: 1;
+    }
+
+    .carousel-arrow {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .certification-card {
+      grid-template-columns: minmax(0, 1fr);
+      justify-items: center;
+      gap: 1.25rem;
+    }
+
+    .certification-image {
+      width: clamp(6.5rem, 24vw, 8rem);
+    }
+
+    .certification-content {
+      width: 100%;
+      text-align: center;
+    }
+
+    .certification-meta {
+      justify-content: center;
+    }
+
+    .certification-meta div {
+      justify-items: center;
+    }
+
+    .certification-topics {
+      justify-content: center;
+    }
+
+    .course-placeholder,
+    .education-entry {
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .education-meta {
+      align-items: flex-start;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      padding-top: 0;
+    }
+
+    .period {
+      white-space: normal;
     }
   }
 </style>

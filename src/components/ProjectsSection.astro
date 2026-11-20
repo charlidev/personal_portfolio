@@ -20,7 +20,12 @@ const { projects } = getPortfolioData(locale);
           <span>{copy.technologies}</span> {project.technologies.join(' · ')}
         </p>
         {project.href ? (
-          <a class="project-link" href={project.href}>
+          <a
+            class="project-link"
+            href={project.href}
+            target={project.external ? '_blank' : undefined}
+            rel={project.external ? 'noopener noreferrer' : undefined}
+          >
             {copy.viewProject} <span aria-hidden="true">↗</span>
           </a>
         ) : (

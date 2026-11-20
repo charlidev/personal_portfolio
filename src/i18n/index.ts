@@ -91,7 +91,7 @@ const english = {
   sections: {
     experienceEyebrow: 'Career history', experience: 'Experience',
     skillsEyebrow: 'Tools', skills: 'Skills',
-    projectsEyebrow: 'Selected work', projects: 'Projects',
+    projectsEyebrow: 'TECHNICAL PORTFOLIO', projects: 'Projects',
     educationEyebrow: 'Learning', education: 'Certifications & Education',
     contactEyebrow: "Let's talk", contact: 'Contact',
   },
@@ -99,11 +99,15 @@ const english = {
   experienceTools: 'Technologies & Tools',
   skills: ['Languages & Processing', 'Platforms & Cloud', 'Databases', 'Architecture & Transformation', 'Development & Engineering', 'BI & Visualization'],
   projectPrefix: 'Project',
+  olistProjectTitle: 'Olist Data Pipeline',
+  olistProjectDescription:
+    'Data pipeline for Olist developed with PySpark and Databricks. It includes ingestion of nine datasets with Auto Loader into Bronze, cleaning and deduplication in Silver, and five aggregated data marts in Gold.',
+  olistProjectTechnologies: ['Python', 'PySpark', 'Databricks', 'Auto Loader', 'Delta Lake', 'ADLS Gen2'],
   projectTitle: '[Title pending]',
   projectDescription: '[Project description pending.]',
   pendingTechnologies: '[Pending]',
   technologies: 'Technologies:',
-  viewProject: 'View project',
+  viewProject: 'View repository',
   projectPagePending: 'Individual project page pending',
   education: 'Education',
   university: 'University education',
@@ -150,7 +154,7 @@ export const spanish = {
   sections: {
     experienceEyebrow: 'Trayectoria', experience: 'Experiencia',
     skillsEyebrow: 'Herramientas', skills: 'Habilidades',
-    projectsEyebrow: 'Trabajo seleccionado', projects: 'Proyectos',
+    projectsEyebrow: 'PORTAFOLIO TÉCNICO', projects: 'Proyectos',
     educationEyebrow: 'Aprendizaje', education: 'Formación y certificaciones',
     contactEyebrow: 'Conversemos', contact: 'Contacto',
   },
@@ -158,11 +162,15 @@ export const spanish = {
   experienceTools: 'Tecnologías y herramientas',
   skills: ['Lenguajes y procesamiento', 'Plataformas y cloud', 'Bases de datos', 'Arquitectura y transformación', 'Desarrollo e ingeniería', 'BI y visualización'],
   projectPrefix: 'Proyecto',
+  olistProjectTitle: 'Olist Data Pipeline',
+  olistProjectDescription:
+    'Pipeline de ingeniería de datos desarrollada con PySpark y Databricks para estructurar nueve datasets de Olist en capas Bronze, Silver y Gold, generando cinco marts analíticos.',
+  olistProjectTechnologies: ['Python', 'PySpark', 'Databricks', 'Auto Loader', 'Delta Lake', 'ADLS Gen2'],
   projectTitle: '[Título pendiente]',
   projectDescription: '[Descripción del proyecto pendiente.]',
   pendingTechnologies: '[Pendientes]',
   technologies: 'Tecnologías:',
-  viewProject: 'Ver proyecto',
+  viewProject: 'Ver repositorio',
   projectPagePending: 'Página individual pendiente',
   education: 'Formación académica',
   university: 'Formación universitaria',
@@ -211,11 +219,11 @@ export const getPortfolioData = (locale: Locale) => {
       };
     }),
     skillGroups: skillGroups.map((group, index) => ({ ...group, name: english.skills[index] })),
-    projects: projects.map((project) => ({
+    projects: projects.map((project, index) => ({
       ...project,
-      title: english.projectTitle,
-      description: english.projectDescription,
-      technologies: [english.pendingTechnologies],
+      title: index === 0 ? english.olistProjectTitle : english.projectTitle,
+      description: index === 0 ? english.olistProjectDescription : english.projectDescription,
+      technologies: index === 0 ? english.olistProjectTechnologies : [english.pendingTechnologies],
     })),
     educationEntries: educationEntries.map((entry, index) => ({
       ...entry,

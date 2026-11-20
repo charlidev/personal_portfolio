@@ -1039,8 +1039,30 @@ import { academyCourses, certifications, educationEntries } from '../data/portfo
     }
 
     .certification-card {
-      grid-template-columns: 4.5rem minmax(0, 1fr);
-      gap: 0.9rem;
+      grid-template-columns: minmax(0, 1fr);
+      justify-items: center;
+      gap: 1.25rem;
+    }
+
+    .certification-image {
+      width: clamp(6.5rem, 24vw, 8rem);
+    }
+
+    .certification-content {
+      width: 100%;
+      text-align: center;
+    }
+
+    .certification-meta {
+      justify-content: center;
+    }
+
+    .certification-meta div {
+      justify-items: center;
+    }
+
+    .certification-topics {
+      justify-content: center;
     }
 
     .course-placeholder,

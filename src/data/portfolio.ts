@@ -9,6 +9,7 @@ export interface PortfolioProject {
   description: string;
   technologies: string[];
   href?: string;
+  external?: boolean;
 }
 
 export interface ContactMethod {
@@ -98,12 +99,23 @@ export const skillGroups: SkillGroup[] = [
   },
 ];
 
-export const projects: PortfolioProject[] = [1, 2, 3].map((number) => ({
-  number,
-  title: '[Título pendiente]',
-  description: '[Descripción del proyecto pendiente.]',
-  technologies: ['[Pendientes]'],
-}));
+export const projects: PortfolioProject[] = [
+  {
+    number: 1,
+    title: 'Olist Data Pipeline',
+    description:
+      'Pipeline de datos para Olist desarrollado con PySpark y Databricks. Incluye ingesta de nueve datasets con Auto Loader en Bronze, limpieza y deduplicación en Silver, y cinco data marts agregados en Gold.',
+    technologies: ['Python', 'PySpark', 'Databricks', 'Auto Loader', 'Delta Lake', 'ADLS Gen2'],
+    href: 'https://github.com/charlidev/Project_06_Olist',
+    external: true,
+  },
+  ...[2, 3].map((number) => ({
+    number,
+    title: '[Título pendiente]',
+    description: '[Descripción del proyecto pendiente.]',
+    technologies: ['[Pendientes]'],
+  })),
+];
 
 export const educationEntries: EducationEntry[] = [
   {

@@ -25,6 +25,21 @@ const englishDates: Record<string, string> = {
 
 const englishExperiences = [
   {
+    role: 'Project Lead',
+    period: 'July 2025 – October 2025',
+    introduction:
+      'Coordination of technology projects involving the migration of microservice pipelines to AWS and process automation using Microsoft tools and RPA.',
+    responsibilities: [
+      'Coordinated and monitored projects involving the migration of microservice pipelines from on-premises environments to AWS.',
+      'Gathered and analyzed project requirements to identify needs and follow up on initiatives.',
+      'Organized project coordination and follow-up meetings.',
+      'Coordinated with external providers to follow up on activities and deliverables.',
+      'Automated processes using Power Automate and SharePoint.',
+      'Performed basic administration of RPA solutions using Automation Anywhere.',
+    ],
+    toolGroups: ['Cloud', 'Automation & RPA'],
+  },
+  {
     role: 'Data Analyst',
     period: '2023–2025',
     introduction:

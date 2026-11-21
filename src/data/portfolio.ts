@@ -312,6 +312,32 @@ export const gerdauCorsaExperience: ProfessionalExperience = {
   ],
 };
 
+export const nacionalMonteDePiedadExperience: ProfessionalExperience = {
+  role: 'Líder de Proyecto',
+  company: 'Nacional Monte de Piedad',
+  period: 'Julio 2025 – Octubre 2025',
+  introduction:
+    'Coordinación de proyectos tecnológicos relacionados con la migración de pipelines de microservicios hacia AWS y la automatización de procesos mediante herramientas Microsoft y RPA.',
+  responsibilities: [
+    'Coordinación y seguimiento de proyectos de migración de pipelines de microservicios desde entornos on-premises hacia AWS.',
+    'Entendimiento y análisis de requerimientos para identificar necesidades y dar seguimiento a las iniciativas.',
+    'Organización de reuniones de coordinación y seguimiento de proyectos.',
+    'Coordinación con proveedores externos para dar seguimiento a actividades y entregables.',
+    'Automatización de procesos mediante Power Automate y SharePoint.',
+    'Administración básica de soluciones RPA con Automation Anywhere.',
+  ],
+  toolGroups: [
+    {
+      category: 'Cloud',
+      tools: ['AWS'],
+    },
+    {
+      category: 'Automatización y RPA',
+      tools: ['Microsoft Power Automate', 'SharePoint', 'Automation Anywhere'],
+    },
+  ],
+};
+
 export const expertosBackOficceExperience: ProfessionalExperience = {
   role: 'Analista de Datos',
   company: 'Expertos de Back Oficce',
@@ -343,6 +369,7 @@ export const expertosBackOficceExperience: ProfessionalExperience = {
 };
 
 export const professionalExperiences: ProfessionalExperience[] = [
+  nacionalMonteDePiedadExperience,
   expertosBackOficceExperience,
   gerdauCorsaExperience,
   pulqueLabsExperience,

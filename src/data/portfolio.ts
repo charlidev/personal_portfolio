@@ -31,10 +31,11 @@ export interface EducationEntry {
 export interface PortfolioCertification {
   issuer: string;
   name: string;
-  holder: string;
+  holder?: string;
   issuedAt: string;
+  issuedAtISO: string;
   expiration: string;
-  topics: string[];
+  topics?: string[];
   image: string;
   credentialUrl?: string;
 }
@@ -164,13 +165,24 @@ export const certifications: PortfolioCertification[] = [
   {
     issuer: 'Databricks Academy',
     name: 'Academy Accreditation - Databricks Fundamentals',
-    holder: 'Carlos Daniel Martínez López',
+    holder: 'Carlos Daniel Martinez Lopez',
     issuedAt: '3 de abril de 2026',
+    issuedAtISO: '2026-04-03',
     expiration: 'No expira',
     topics: ['Databricks', 'Data Intelligence Platform', 'Data Management Platforms'],
     image: '/images/certifications/databricks-fundamentals.png',
   },
-];
+  {
+    issuer: 'Certiprof',
+    name: 'Scrum Master Professional Certification (SMPC®)',
+    holder: 'Carlos Daniel Martinez Lopez',
+    issuedAt: '14 de enero de 2025',
+    issuedAtISO: '2025-01-14',
+    expiration: '14 de enero de 2028',
+    topics: ['Metodología SCRUM', 'Agile'],
+    image: '/images/certifications/certiprof-smpc.png',
+  },
+].sort((first, second) => second.issuedAtISO.localeCompare(first.issuedAtISO));
 
 export const academyCourses: PortfolioCourse[] = [
   {

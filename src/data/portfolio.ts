@@ -109,12 +109,39 @@ export const projects: PortfolioProject[] = [
     href: 'https://github.com/charlidev/Project_06_Olist',
     external: true,
   },
-  ...[2, 3].map((number) => ({
-    number,
-    title: '[Título pendiente]',
-    description: '[Descripción del proyecto pendiente.]',
-    technologies: ['[Pendientes]'],
-  })),
+  {
+    number: 2,
+    title: 'CRM Marketing Data Pipeline',
+    description:
+      'Pipeline de datos de marketing basado en arquitectura Medallion con Azure Databricks y PySpark. Integra ingesta incremental con Auto Loader, reglas de calidad mediante DLT Expectations y modelado dimensional, con despliegue automatizado mediante Databricks Asset Bundles y GitHub Actions.',
+    technologies: [
+      'Azure Databricks',
+      'PySpark',
+      'Delta Live Tables (DLT)',
+      'Auto Loader',
+      'DLT Expectations',
+      'Databricks Asset Bundles',
+      'GitHub Actions',
+    ],
+    href: 'https://github.com/charlidev/Project_08_Marketing',
+    external: true,
+  },
+  {
+    number: 3,
+    title: 'AI Job Impact Analysis',
+    description:
+      'Pipeline analítico en Snowflake para estudiar el impacto de la IA en el empleo. Implementa arquitectura Medallion, ingesta desde Internal Stage y transformaciones con SQL y Snowpark para analizar salarios, riesgo de automatización y productividad.',
+    technologies: [
+      'Snowflake',
+      'SQL',
+      'Snowpark',
+      'Medallion Architecture',
+      'Internal Stage',
+      'COPY INTO',
+    ],
+    href: 'https://github.com/charlidev/AI_Job_Impact_Analysis_Snowflake_Data_Pipeline',
+    external: true,
+  },
 ];
 
 export const educationEntries: EducationEntry[] = [

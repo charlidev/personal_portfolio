@@ -118,6 +118,29 @@ const english = {
   olistProjectDescription:
     'Data pipeline for Olist developed with PySpark and Databricks. It includes ingestion of nine datasets with Auto Loader into Bronze, cleaning and deduplication in Silver, and five aggregated data marts in Gold.',
   olistProjectTechnologies: ['Python', 'PySpark', 'Databricks', 'Auto Loader', 'Delta Lake', 'ADLS Gen2'],
+  marketingProjectTitle: 'CRM Marketing Data Pipeline',
+  marketingProjectDescription:
+    'Marketing data pipeline built on a Medallion architecture with Azure Databricks and PySpark. It combines incremental ingestion with Auto Loader, data quality rules using DLT Expectations, and dimensional modeling, with automated deployment through Databricks Asset Bundles and GitHub Actions.',
+  marketingProjectTechnologies: [
+    'Azure Databricks',
+    'PySpark',
+    'Delta Live Tables (DLT)',
+    'Auto Loader',
+    'DLT Expectations',
+    'Databricks Asset Bundles',
+    'GitHub Actions',
+  ],
+  aiJobImpactProjectTitle: 'AI Job Impact Analysis',
+  aiJobImpactProjectDescription:
+    "Snowflake analytics pipeline exploring AI's impact on employment. It follows a Medallion architecture, ingests data from an Internal Stage, and transforms it with SQL and Snowpark to analyze salaries, automation risk, and productivity.",
+  aiJobImpactProjectTechnologies: [
+    'Snowflake',
+    'SQL',
+    'Snowpark',
+    'Medallion Architecture',
+    'Internal Stage',
+    'COPY INTO',
+  ],
   projectTitle: '[Title pending]',
   projectDescription: '[Project description pending.]',
   pendingTechnologies: '[Pending]',
@@ -236,9 +259,27 @@ export const getPortfolioData = (locale: Locale) => {
     skillGroups: skillGroups.map((group, index) => ({ ...group, name: english.skills[index] })),
     projects: projects.map((project, index) => ({
       ...project,
-      title: index === 0 ? english.olistProjectTitle : english.projectTitle,
-      description: index === 0 ? english.olistProjectDescription : english.projectDescription,
-      technologies: index === 0 ? english.olistProjectTechnologies : [english.pendingTechnologies],
+      title: index === 0
+        ? english.olistProjectTitle
+        : index === 1
+          ? english.marketingProjectTitle
+          : index === 2
+            ? english.aiJobImpactProjectTitle
+            : english.projectTitle,
+      description: index === 0
+        ? english.olistProjectDescription
+        : index === 1
+          ? english.marketingProjectDescription
+          : index === 2
+            ? english.aiJobImpactProjectDescription
+            : english.projectDescription,
+      technologies: index === 0
+        ? english.olistProjectTechnologies
+        : index === 1
+          ? english.marketingProjectTechnologies
+          : index === 2
+            ? english.aiJobImpactProjectTechnologies
+            : [english.pendingTechnologies],
     })),
     educationEntries: educationEntries.map((entry, index) => ({
       ...entry,

@@ -12,6 +12,8 @@ export type Locale = 'es' | 'en';
 
 const englishDates: Record<string, string> = {
   '3 de abril de 2026': 'April 3, 2026',
+  '14 de enero de 2025': 'January 14, 2025',
+  '14 de enero de 2028': 'January 14, 2028',
   '5 de julio de 2026': 'July 5, 2026',
   '7 de octubre de 2026': 'October 7, 2026',
   '5 de octubre de 2026': 'October 5, 2026',

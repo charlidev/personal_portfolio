@@ -56,7 +56,9 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
                 <div class="certification-content">
                   <p class="certification-issuer">{certification.issuer}</p>
                   <h4>{certification.name}</h4>
-                  <p class="certification-holder">{copy.credentialHolder}: {certification.holder}</p>
+                  {certification.holder && (
+                    <p class="certification-holder">{copy.credentialHolder}: {certification.holder}</p>
+                  )}
 
                   <dl class="certification-meta">
                     <div>
@@ -69,9 +71,11 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
                     </div>
                   </dl>
 
-                  <ul class="certification-topics" aria-label={copy.associatedKnowledge}>
-                    {certification.topics.map((topic) => <li>{topic}</li>)}
-                  </ul>
+                  {certification.topics?.length ? (
+                    <ul class="certification-topics" aria-label={copy.associatedKnowledge}>
+                      {certification.topics.map((topic) => <li>{topic}</li>)}
+                    </ul>
+                  ) : null}
                 </div>
               </li>
             ))}

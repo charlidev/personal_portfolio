@@ -1,14 +1,18 @@
+---
+import { getCopy, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+---
+
 <section id="inicio" class="hero container" aria-labelledby="hero-title">
-  <p class="eyebrow">INGENIERÍA DE DATOS</p>
+  <p class="eyebrow">{copy.heroEyebrow}</p>
   <h1 id="hero-title">Carlos Martinez</h1>
-  <p class="hero-description">
-    Con formación en Ciencias Computacionales y enfoque en Ingeniería de Datos, desarrollo proyectos
-    de ingesta, transformación y calidad de datos con Python, SQL y tecnologías cloud. Me interesa
-    construir pipelines confiables que faciliten el análisis y la toma de decisiones.
-  </p>
+  <p class="hero-description">{copy.heroDescription}</p>
   <div class="hero-actions">
-    <a class="button button-primary" href="#proyectos">Ver proyectos</a>
-    <a class="button button-secondary" href="#contacto">Contactar</a>
+    <a class="button button-primary" href="#proyectos">{copy.heroProjects}</a>
+    <a class="button button-secondary" href="#contacto">{copy.heroContact}</a>
   </div>
 </section>
 

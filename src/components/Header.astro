@@ -1,3 +1,13 @@
+---
+import { getCopy, type Locale } from '../i18n';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const sectionIds = ['inicio', 'experiencia', 'habilidades', 'proyectos', 'formacion', 'contacto'];
+const targetPath = locale === 'es' ? '/en/' : '/';
+---
+
 <header class="site-header">
   <div class="container header-inner">
     <button
@@ -5,18 +15,22 @@
       type="button"
       aria-expanded="false"
       aria-controls="primary-navigation"
-      aria-label="Abrir menú de navegación"
+      aria-label={copy.menuOpen}
+      data-open-label={copy.menuOpen}
+      data-close-label={copy.menuClose}
     >
       <span class="menu-toggle-lines" aria-hidden="true"></span>
     </button>
 
-    <nav id="primary-navigation" class="primary-navigation" aria-label="Navegación principal">
-      <a href="#inicio">Inicio</a>
-      <a href="#experiencia">Experiencia</a>
-      <a href="#habilidades">Habilidades</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#formacion">Certificaciones y formación</a>
-      <a href="#contacto">Contacto</a>
+    <nav id="primary-navigation" class="primary-navigation" aria-label={copy.navigationLabel}>
+      {copy.navigation.map((label, index) => <a href={`#${sectionIds[index]}`}>{label}</a>)}
+      <a class="language-switch" href={targetPath} aria-label={copy.switchLanguage} data-language-switch>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+        </svg>
+        <span>{copy.switchLabel}</span>
+      </a>
     </nav>
   </div>
 </header>
@@ -28,7 +42,7 @@
   if (toggle && navigation) {
     const closeMenu = () => {
       toggle.setAttribute('aria-expanded', 'false');
-      toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+      toggle.setAttribute('aria-label', toggle.dataset.openLabel ?? 'Open navigation menu');
       navigation.removeAttribute('data-open');
     };
 
@@ -39,7 +53,7 @@
       toggle.setAttribute('aria-expanded', String(!isExpanded));
       toggle.setAttribute(
         'aria-label',
-        isExpanded ? 'Abrir menú de navegación' : 'Cerrar menú de navegación',
+        isExpanded ? toggle.dataset.openLabel ?? 'Open navigation menu' : toggle.dataset.closeLabel ?? 'Close navigation menu',
       );
 
       if (isExpanded) {
@@ -60,6 +74,13 @@
       }
     });
   }
+
+  const languageSwitch = document.querySelector<HTMLAnchorElement>('[data-language-switch]');
+  languageSwitch?.addEventListener('click', (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    window.location.assign(`${languageSwitch.href}${window.location.hash}`);
+  });
 </script>
 
 <style>
@@ -94,6 +115,34 @@
 
   .primary-navigation a:hover {
     color: var(--color-text);
+  }
+
+  .primary-navigation a:focus-visible,
+  .language-switch:focus-visible {
+    border-radius: var(--radius-sm);
+    outline: 2px solid var(--color-highlight);
+    outline-offset: 4px;
+  }
+
+  .primary-navigation .language-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  .language-switch svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.6;
   }
 
   .menu-toggle {
@@ -172,6 +221,11 @@
       padding: 0.75rem;
       border-radius: var(--radius-sm);
       font-size: var(--text-base);
+    }
+
+    .primary-navigation .language-switch {
+      min-height: 2.75rem;
+      padding: 0.75rem;
     }
 
     .primary-navigation a:hover {

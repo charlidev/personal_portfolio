@@ -6,14 +6,23 @@ import { getCopy, type Locale } from '../i18n';
 import { olistProjectCopy } from '../i18n/olistProject';
 import { crmProjectCopy } from '../i18n/crmProject';
 import { aiJobImpactCopy } from '../i18n/aiJobImpactProject';
+import { ferreteriaProjectCopy } from '../i18n/ferreteriaProject';
+import { ecommerceDataQualityProjectCopy } from '../i18n/ecommerceDataQualityProject';
+import { retailTransactionsProjectCopy } from '../i18n/retailTransactionsProject';
 
-interface Props { locale: Locale; project?: 'olist' | 'crm-marketing' | 'ai-job-impact' }
+interface Props { locale: Locale; project?: 'olist' | 'crm-marketing' | 'ai-job-impact' | 'ferreteria' | 'ecommerce-data-quality' | 'retail-transactions' }
 const { locale, project = 'olist' } = Astro.props;
-const copy = project === 'ai-job-impact'
-  ? aiJobImpactCopy[locale]
-  : project === 'crm-marketing'
-    ? crmProjectCopy[locale]
-    : olistProjectCopy[locale];
+const copy = project === 'retail-transactions'
+  ? retailTransactionsProjectCopy[locale]
+  : project === 'ecommerce-data-quality'
+  ? ecommerceDataQualityProjectCopy[locale]
+  : project === 'ferreteria'
+    ? ferreteriaProjectCopy[locale]
+  : project === 'ai-job-impact'
+    ? aiJobImpactCopy[locale]
+    : project === 'crm-marketing'
+      ? crmProjectCopy[locale]
+      : olistProjectCopy[locale];
 const siteCopy = getCopy(locale);
 const projectSlug = project;
 const spanishPath = `/proyectos/${projectSlug}/`;
@@ -55,10 +64,27 @@ const description = copy.subtitle;
         <p class="project-subtitle">{copy.subtitle}</p>
       </div>
       <span class="database-mark" aria-hidden="true">
+        {project === 'retail-transactions' ? (
+          <svg viewBox="0 0 64 64" focusable="false">
+            <path d="M10 54h46M16 48V34h9v14M30 48V23h9v25M44 48V12h9v36" />
+            <path d="m13 25 12-8 11 3 17-12" />
+          </svg>
+        ) : project === 'ecommerce-data-quality' ? (
+          <svg viewBox="0 0 64 64" focusable="false">
+            <circle cx="27" cy="27" r="17" />
+            <path d="m39 39 14 14M18 27l6 6 12-13" />
+          </svg>
+        ) : project === 'ferreteria' ? (
+          <svg viewBox="0 0 64 64" focusable="false">
+            <path d="M8 27 32 11l24 16v27H8V27Z" />
+            <path d="M18 34h28v20H18zM18 41h28M27 34v20M37 34v20" />
+          </svg>
+        ) : (
         <svg viewBox="0 0 64 64" focusable="false">
           <ellipse cx="32" cy="13" rx="20" ry="8" />
           <path d="M12 13v14c0 4.4 9 8 20 8s20-3.6 20-8V13M12 27v14c0 4.4 9 8 20 8s20-3.6 20-8V27M12 41v10c0 4.4 9 8 20 8s20-3.6 20-8V41" />
         </svg>
+        )}
       </span>
     </section>
 

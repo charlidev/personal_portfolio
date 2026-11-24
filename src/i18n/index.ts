@@ -143,6 +143,18 @@ const english = {
     'Internal Stage',
     'COPY INTO',
   ],
+  ferreteriaProjectTitle: 'Hardware Retail Data Lakehouse',
+  ferreteriaProjectDescription:
+    'Data pipeline simulating a hardware retail operation. It integrates catalog and incremental transaction generation, Auto Loader ingestion, transformation of 11 entities, and record updates using Delta MERGE. It builds Gold tables for sales, inventory, and supplier analysis.',
+  ferreteriaProjectTechnologies: ['Python', 'PySpark', 'Azure Databricks', 'ADLS Gen2', 'Auto Loader', 'Delta Lake', 'Unity Catalog'],
+  ecommerceDataQualityProjectTitle: 'E-commerce Data Quality Pipeline',
+  ecommerceDataQualityProjectDescription:
+    'Snowflake data quality pipeline for preparing e-commerce information. Implements null profiling, standardization, logical deduplication using a business key, and traceable anomaly correction, producing a final table ready for analytics.',
+  ecommerceDataQualityProjectTechnologies: ['Snowflake', 'SQL', 'Snowsight', 'Data Quality', 'Data Cleansing', 'Deduplication', 'Business Rules'],
+  retailTransactionsProjectTitle: 'Retail Transactions Analytics',
+  retailTransactionsProjectDescription:
+    'Retail analytics solution implemented with Snowflake and Databricks. Processes a 100,000-record dataset, applies data transformations, and builds seven business views for profitability, geographic performance, payment methods, discounts, and product behavior, with an analytics consumption layer.',
+  retailTransactionsProjectTechnologies: ['Snowflake', 'Databricks', 'SQL', 'PySpark', 'Snowpark', 'Power BI'],
   projectTitle: '[Title pending]',
   projectDescription: '[Project description pending.]',
   pendingTechnologies: '[Pending]',
@@ -263,28 +275,46 @@ export const getPortfolioData = (locale: Locale) => {
     skillGroups: skillGroups.map((group, index) => ({ ...group, name: english.skills[index] })),
     projects: projects.map((project, index) => ({
       ...project,
-      detailUrl: index === 0 ? '/en/projects/olist/' : index === 1 ? '/en/projects/crm-marketing/' : index === 2 ? '/en/projects/ai-job-impact/' : project.detailUrl,
+      detailUrl: index === 0 ? '/en/projects/olist/' : index === 1 ? '/en/projects/crm-marketing/' : index === 2 ? '/en/projects/ai-job-impact/' : index === 3 ? '/en/projects/ferreteria/' : index === 4 ? '/en/projects/ecommerce-data-quality/' : index === 5 ? '/en/projects/retail-transactions/' : project.detailUrl,
       title: index === 0
         ? english.olistProjectTitle
         : index === 1
           ? english.marketingProjectTitle
           : index === 2
             ? english.aiJobImpactProjectTitle
-            : english.projectTitle,
+            : index === 3
+              ? english.ferreteriaProjectTitle
+              : index === 4
+                ? english.ecommerceDataQualityProjectTitle
+                : index === 5
+                  ? english.retailTransactionsProjectTitle
+                  : english.projectTitle,
       description: index === 0
         ? english.olistProjectDescription
         : index === 1
           ? english.marketingProjectDescription
           : index === 2
             ? english.aiJobImpactProjectDescription
-            : english.projectDescription,
+            : index === 3
+              ? english.ferreteriaProjectDescription
+              : index === 4
+                ? english.ecommerceDataQualityProjectDescription
+                : index === 5
+                  ? english.retailTransactionsProjectDescription
+                  : english.projectDescription,
       technologies: index === 0
         ? english.olistProjectTechnologies
         : index === 1
           ? english.marketingProjectTechnologies
           : index === 2
             ? english.aiJobImpactProjectTechnologies
-            : [english.pendingTechnologies],
+            : index === 3
+              ? english.ferreteriaProjectTechnologies
+              : index === 4
+                ? english.ecommerceDataQualityProjectTechnologies
+                : index === 5
+                  ? english.retailTransactionsProjectTechnologies
+                  : [english.pendingTechnologies],
     })),
     educationEntries: educationEntries.map((entry, index) => ({
       ...entry,

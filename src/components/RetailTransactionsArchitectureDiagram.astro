@@ -1,0 +1,101 @@
+---
+import type { OlistProjectCopy } from '../i18n/olistProject';
+
+interface Props {
+  title: string;
+  description: string;
+  labels: NonNullable<OlistProjectCopy['retailDiagramLabels']>;
+}
+
+const { title, description, labels } = Astro.props;
+const stages = [
+  { name: labels.source, details: ['Retail_Transaction_Dataset.csv'] },
+  { name: labels.stage, details: ['STG_RAW_DATA', 'CSV_GENERIC_FORMAT'] },
+  { name: labels.copyInto, details: ["FILES = ('Retail_Transaction_Dataset.csv')", 'ON_ERROR = CONTINUE'] },
+  { name: labels.bronze, details: ['RAW_DATA', 'VARCHAR'] },
+  { name: labels.silver, details: ['TRIM', 'UPPER', 'TRY_TO_NUMBER', 'TRY_TO_DOUBLE', 'TO_TIMESTAMP', 'COALESCE', 'REGEXP_SUBSTR', 'CURRENT_TIMESTAMP'] },
+  { name: labels.gold, details: labels.goldViews, gold: true },
+  { name: labels.powerBi, details: ['Business Intelligence'] },
+];
+---
+
+<figure class="retail-architecture" aria-labelledby="retail-architecture-title">
+  <figcaption>
+    <h3 id="retail-architecture-title">{title}</h3>
+    <p>{description}</p>
+  </figcaption>
+
+  <ol class="retail-flow" aria-label={title}>
+    {stages.map((stage, index) => (
+      <li class:list={['flow-stage', { 'gold-stage': stage.gold, 'bi-stage': index === 6 }]}>
+        <div class="stage-heading">
+          <span class="stage-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <strong>{stage.name}</strong>
+        </div>
+        <div class:list={['stage-details', { 'gold-views': stage.gold }]}>
+          {stage.details.map((detail) => <code>{detail}</code>)}
+        </div>
+        {index < stages.length - 1 && <span class="flow-arrow" aria-hidden="true">↓</span>}
+      </li>
+    ))}
+  </ol>
+
+  <section class="alternative-implementations" aria-labelledby="retail-alternatives-title">
+    <h4 id="retail-alternatives-title">{labels.alternativesTitle}</h4>
+    <div class="alternative-grid">
+      <article>
+        <h5>{labels.databricksTitle}</h5>
+        <ul>{labels.databricksBullets.map((item) => <li>{item}</li>)}</ul>
+      </article>
+      <article>
+        <h5>{labels.snowparkTitle}</h5>
+        <ul>{labels.snowparkBullets.map((item) => <li>{item}</li>)}</ul>
+      </article>
+    </div>
+  </section>
+</figure>
+
+<style>
+  .retail-architecture {
+    margin: 2.5rem 0 0;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-content-card-background);
+    box-shadow: var(--color-card-shadow);
+  }
+  figcaption h3 { margin: 0; font-size: var(--text-lg); }
+  figcaption p { max-width: 72ch; margin: 0.55rem 0 0; color: var(--color-text-muted); }
+  .retail-flow { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 1.25rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
+  .flow-stage { position: relative; display: grid; min-width: 0; grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1.5fr); align-items: center; gap: 1.25rem; padding: 1rem 1.1rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card-background); }
+  .stage-heading { display: grid; min-width: 0; grid-template-columns: 2.2rem minmax(0, 1fr); align-items: start; gap: 0.7rem; }
+  .flow-stage strong { min-width: 0; font-size: var(--text-sm); line-height: 1.45; word-break: normal; overflow-wrap: normal; }
+  .stage-index { color: var(--color-secondary); font-family: var(--font-mono); font-size: var(--text-xs); }
+  .stage-details { display: flex; min-width: 0; flex-wrap: wrap; gap: 0.4rem; }
+  .stage-details code { max-width: 100%; padding: 0.2rem 0.45rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: var(--color-inline-code); font-family: var(--font-mono); font-size: var(--text-xs); line-height: 1.5; word-break: normal; overflow-wrap: break-word; }
+  .gold-stage { border-color: var(--color-accent); background: var(--color-summary-background); }
+  .bi-stage { border-color: var(--color-secondary); }
+  .flow-arrow { position: absolute; z-index: 1; top: calc(100% + 0.05rem); left: 50%; color: var(--color-accent); font-size: var(--text-base); line-height: 1; transform: translateX(-50%); }
+  .gold-views { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; }
+  .gold-views code { white-space: normal; }
+  .alternative-implementations { margin-top: 1.5rem; padding-top: 1.1rem; border-top: 1px solid var(--color-border); }
+  .alternative-implementations h4 { margin: 0; font-size: var(--text-base); }
+  .alternative-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--component-gap); margin-top: 0.8rem; }
+  .alternative-grid article { min-width: 0; padding: 0.9rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card-background); }
+  .alternative-grid h5 { margin: 0; font-size: var(--text-sm); }
+  .alternative-grid ul { margin: 0.55rem 0 0; padding-left: 1.15rem; }
+  .alternative-grid li { margin-top: 0.3rem; color: var(--color-text-muted); font-size: var(--text-xs); }
+
+  @media (max-width: 64rem) {
+    .flow-stage { grid-template-columns: minmax(15rem, 0.9fr) minmax(0, 1.5fr); }
+    .gold-views { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 46rem) {
+    .flow-stage { grid-template-columns: minmax(0, 1fr); gap: 0.8rem; }
+    .stage-heading { grid-template-columns: 2rem minmax(0, 1fr); }
+    .stage-details { padding-left: 2.7rem; }
+  }
+  @media (max-width: 38rem) {
+    .alternative-grid { grid-template-columns: 1fr; }
+  }
+</style>

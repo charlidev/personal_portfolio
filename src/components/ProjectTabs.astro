@@ -2,6 +2,9 @@
 import OlistArchitectureDiagram from './OlistArchitectureDiagram.astro';
 import CrmArchitectureDiagram from './CrmArchitectureDiagram.astro';
 import AiJobImpactDiagram from './AiJobImpactDiagram.astro';
+import FerreteriaArchitectureDiagram from './FerreteriaArchitectureDiagram.astro';
+import EcommerceQualityDiagram from './EcommerceQualityDiagram.astro';
+import RetailTransactionsArchitectureDiagram from './RetailTransactionsArchitectureDiagram.astro';
 import ProjectCodeBlock from './ProjectCodeBlock.astro';
 import type { OlistProjectCopy } from '../i18n/olistProject';
 
@@ -40,10 +43,16 @@ const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
         </article>
       ))}
     </div>
-    {copy.aiDiagramLabels ? (
+    {copy.ecommerceDiagramLabels ? (
+      <EcommerceQualityDiagram title={copy.diagramTitle} description={copy.diagramDescription} labels={copy.ecommerceDiagramLabels} />
+    ) : copy.ferreteriaDiagramLabels ? (
+      <FerreteriaArchitectureDiagram title={copy.diagramTitle} description={copy.diagramDescription} labels={copy.ferreteriaDiagramLabels} />
+    ) : copy.aiDiagramLabels ? (
       <AiJobImpactDiagram title={copy.diagramTitle} description={copy.diagramDescription} architectureLabels={copy.aiDiagramLabels} />
     ) : copy.crmDiagramLabels ? (
       <CrmArchitectureDiagram title={copy.diagramTitle} description={copy.diagramDescription} labels={copy.crmDiagramLabels} />
+    ) : copy.retailDiagramLabels ? (
+      <RetailTransactionsArchitectureDiagram title={copy.diagramTitle} description={copy.diagramDescription} labels={copy.retailDiagramLabels} />
     ) : copy.diagramLabels && <OlistArchitectureDiagram copy={copy} labels={copy.diagramLabels} />}
   </section>
 
@@ -81,6 +90,14 @@ const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
       <AiJobImpactDiagram title={copy.workflowDiagramTitle} description={copy.workflowDiagramDescription} workflowLabels={copy.aiWorkflowLabels} />
     )}
     <p class="callout">{copy.workflowNote}</p>
+    {copy.workflowAlternatives && (
+      <section class="workflow-alternatives" aria-labelledby="workflow-alternatives-title">
+        <h3 id="workflow-alternatives-title">{copy.workflowAlternatives.title}</h3>
+        <div class="workflow-alternative-grid">
+          {copy.workflowAlternatives.items.map((item) => <article><h4>{item.name}</h4><p>{item.description}</p></article>)}
+        </div>
+      </section>
+    )}
   </section>
 
   <section id="project-panel-code" class="tab-panel" role="tabpanel" aria-labelledby="project-tab-code" tabindex="0" hidden>
@@ -110,6 +127,29 @@ const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
         </article>
       ))}
     </div>
+
+    {copy.retailInsights && (
+      <section class="retail-insights" aria-labelledby="retail-insights-title">
+        <h3 id="retail-insights-title">{copy.retailInsights.title}</h3>
+        <div class="retail-insight-grid">
+          {copy.retailInsights.items.map((insight) => (
+            <article class="content-card retail-insight">
+              <h4>{insight.title}</h4>
+              <code>{insight.view}</code>
+              <p class="insight-question">{insight.question}</p>
+              <ul>{insight.metrics.map((metric) => <li><code>{metric}</code></li>)}</ul>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {copy.validationQueries && (
+      <section class="evidence-section" aria-labelledby="validation-queries-title">
+        <h3 id="validation-queries-title">{copy.validationQueries.title}</h3>
+        <ul>{copy.validationQueries.items.map((item) => <li>{item}</li>)}</ul>
+      </section>
+    )}
 
     {copy.evidence && (
       <section class="evidence-section">
@@ -306,15 +346,30 @@ const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
   .future-grid section { padding-top: 1rem; border-top: 1px solid var(--color-border); }
   .future-grid h3 { margin: 0; font-size: var(--text-lg); }
   .future-grid ul { padding-left: 1.2rem; }
+  .workflow-alternatives, .retail-insights { margin-top: 2.5rem; }
+  .workflow-alternatives > h3, .retail-insights > h3 { margin: 0; font-size: var(--text-lg); }
+  .workflow-alternative-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--component-gap); margin-top: 1rem; }
+  .workflow-alternative-grid article { min-width: 0; padding-top: 0.9rem; border-top: 1px solid var(--color-border); }
+  .workflow-alternative-grid h4 { margin: 0; font-size: var(--text-base); }
+  .workflow-alternative-grid p { color: var(--color-text-muted); }
+  .retail-insight-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--component-gap); margin-top: 1rem; }
+  .retail-insight h4 { margin: 0; font-size: var(--text-base); }
+  .retail-insight > code { display: inline-block; margin-top: 0.5rem; color: var(--color-inline-code); font-family: var(--font-mono); font-size: var(--text-xs); overflow-wrap: anywhere; }
+  .retail-insight .insight-question { color: var(--color-text-muted); }
+  .retail-insight ul { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.8rem 0 0; padding: 0; list-style: none; }
+  .retail-insight li { margin: 0; padding: 0.2rem 0.4rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+  .retail-insight li code { color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-xs); overflow-wrap: anywhere; }
 
   @media (max-width: 54rem) {
     .layer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .measure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .retail-insight-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 38rem) {
     .tab-scroller { margin-inline: calc(-1 * var(--page-gutter)); padding-inline: var(--page-gutter); }
     .layer-grid, .component-grid, .result-grid, .domain-grid, .future-grid, .measure-grid { grid-template-columns: 1fr; }
     .workflow-step { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 0.75rem; }
+    .workflow-alternative-grid, .retail-insight-grid { grid-template-columns: 1fr; }
   }
 </style>

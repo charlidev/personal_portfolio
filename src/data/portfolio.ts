@@ -143,6 +143,33 @@ export const projects: PortfolioProject[] = [
     detailUrl: '/proyectos/ai-job-impact/',
     repositoryUrl: 'https://github.com/charlidev/AI_Job_Impact_Analysis_Snowflake_Data_Pipeline',
   },
+  {
+    number: 4,
+    title: 'Ferretería Data Lakehouse',
+    description:
+      'Pipeline de datos para simular la operación de una ferretería. Integra generación de catálogos y transacciones incrementales, ingesta con Auto Loader, transformación de 11 entidades y actualización de registros mediante Delta MERGE. Construye tablas Gold para analizar ventas, inventario y proveedores.',
+    technologies: ['Python', 'PySpark', 'Azure Databricks', 'ADLS Gen2', 'Auto Loader', 'Delta Lake', 'Unity Catalog'],
+    detailUrl: '/proyectos/ferreteria/',
+    repositoryUrl: 'https://github.com/charlidev/Data_Engineering_Portfolio/tree/master/Project_05_Ferreteria',
+  },
+  {
+    number: 5,
+    title: 'E-commerce Data Quality Pipeline',
+    description:
+      'Pipeline de calidad de datos en Snowflake para preparar información de e-commerce. Implementa profiling de nulos, estandarización, deduplicación mediante una llave lógica de negocio y corrección trazable de anomalías, generando una tabla final lista para análisis.',
+    technologies: ['Snowflake', 'SQL', 'Snowsight', 'Data Quality', 'Data Cleansing', 'Deduplication', 'Business Rules'],
+    detailUrl: '/proyectos/ecommerce-data-quality/',
+    repositoryUrl: 'https://github.com/charlidev/snowflake-data-quality-ecommerce',
+  },
+  {
+    number: 6,
+    title: 'Retail Transactions Analytics',
+    description:
+      'Solución analítica de retail implementada con Snowflake y Databricks. Procesa un dataset de 100,000 transacciones, aplica transformaciones de datos y construye siete vistas de negocio para analizar rentabilidad, rendimiento geográfico, métodos de pago, descuentos y comportamiento de productos, con una capa orientada al consumo analítico.',
+    technologies: ['Snowflake', 'Databricks', 'SQL', 'PySpark', 'Snowpark', 'Power BI'],
+    detailUrl: '/proyectos/retail-transactions/',
+    repositoryUrl: 'https://github.com/charlidev/Data_Engineering_Portfolio/tree/master/Project_02_Retail_Transactions',
+  },
 ];
 
 export const educationEntries: EducationEntry[] = [

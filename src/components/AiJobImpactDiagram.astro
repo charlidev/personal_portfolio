@@ -57,10 +57,10 @@ const { title, description, architectureLabels, workflowLabels } = Astro.props;
         <g class="flow-node"><rect x="215" y="35" width="180" height="80" rx="12" /><text x="305" y="67">Snowflake</text><text class="node-subtitle" x="305" y="94">{architectureLabels.stage}</text></g>
         <text class="node-note" x="305" y="137">{architectureLabels.fileFormat}</text>
         <g class="flow-node action"><rect x="440" y="35" width="170" height="80" rx="12" /><text x="525" y="83">COPY INTO</text></g>
-        <g class="flow-node layer"><rect x="655" y="35" width="170" height="80" rx="12" /><text x="740" y="67">{architectureLabels.bronze}</text><text class="node-subtitle" x="740" y="94">{architectureLabels.rawTable} · VARCHAR</text></g>
-        <g class="flow-node layer"><rect x="870" y="35" width="170" height="80" rx="12" /><text x="955" y="66">{architectureLabels.silver}</text><text class="node-subtitle" x="955" y="94">{architectureLabels.cleanTable}</text></g>
+        <g class="flow-node layer bronze"><rect x="655" y="35" width="170" height="80" rx="12" /><text x="740" y="67">{architectureLabels.bronze}</text><text class="node-subtitle" x="740" y="94">{architectureLabels.rawTable} · VARCHAR</text></g>
+        <g class="flow-node layer silver"><rect x="870" y="35" width="170" height="80" rx="12" /><text x="955" y="66">{architectureLabels.silver}</text><text class="node-subtitle" x="955" y="94">{architectureLabels.cleanTable}</text></g>
         <text class="node-note" x="955" y="137">TRIM · CAST · CASE · BOOLEAN</text>
-        <g class="flow-node layer"><rect x="1085" y="35" width="160" height="80" rx="12" /><text x="1165" y="83">{architectureLabels.gold}</text></g>
+        <g class="flow-node layer gold"><rect x="1085" y="35" width="160" height="80" rx="12" /><text x="1165" y="83">{architectureLabels.gold}</text></g>
         {architectureLabels.views.map((view, index) => {
           const x = [20, 470, 920][index];
           return <g class="flow-node output"><rect x={x} y="210" width="340" height="76" rx="12" /><text x={x + 170} y="253">{view}</text></g>;
@@ -95,19 +95,22 @@ const { title, description, architectureLabels, workflowLabels } = Astro.props;
 <style>
   .ai-diagram { margin: 2.25rem 0 0; }
   figcaption { margin-bottom: 0.85rem; font-weight: 600; }
-  .diagram-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: rgb(11 83 81 / 12%); scrollbar-color: var(--color-secondary) transparent; }
+  .diagram-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-diagram-background); scrollbar-color: var(--color-secondary) transparent; }
   svg { display: block; width: 100%; min-width: 0; height: auto; }
   .flow-lines { fill: none; stroke: var(--color-secondary); stroke-width: 2; marker-end: url(#ai-architecture-arrow); }
   .workflow-lines { marker-end: url(#ai-workflow-arrow); }
   .complement-line { stroke-dasharray: 6 5; }
   marker polygon { fill: var(--color-secondary); }
-  .flow-node rect { fill: var(--color-background); stroke: var(--color-border); stroke-width: 1.5; }
-  .flow-node.layer rect { fill: rgb(11 83 81 / 45%); stroke: var(--color-accent); }
-  .flow-node.action rect { stroke: var(--color-highlight); }
-  .flow-node.output rect { fill: rgb(11 83 81 / 22%); stroke: var(--color-secondary); }
-  .flow-node.complement rect { fill: rgb(11 83 81 / 14%); stroke: var(--color-secondary); }
+  .flow-node rect { fill: var(--color-diagram-node-background); stroke: var(--color-diagram-node-border); stroke-width: 1.5; }
+  .flow-node.layer rect { fill: var(--color-diagram-layer-soft); stroke: var(--color-accent); }
+  :global([data-theme='light']) .flow-node.layer.bronze rect { fill: var(--color-diagram-layer-bronze); }
+  :global([data-theme='light']) .flow-node.layer.silver rect { fill: var(--color-diagram-layer-silver); }
+  :global([data-theme='light']) .flow-node.layer.gold rect { fill: var(--color-diagram-layer-gold); }
+  .flow-node.action rect { stroke: var(--color-diagram-emphasis-border); }
+  .flow-node.output rect { fill: var(--color-diagram-output); stroke: var(--color-secondary); }
+  .flow-node.complement rect { fill: var(--color-diagram-complement); stroke: var(--color-secondary); }
   .flow-node text { fill: var(--color-text); font: 600 14px var(--font-sans); text-anchor: middle; }
   .flow-node .node-subtitle, .node-note { fill: var(--color-text-muted); font: 11px var(--font-mono); text-anchor: middle; }
-  .section-label { fill: var(--color-highlight); font: 12px var(--font-mono); letter-spacing: 1px; }
+  .section-label { fill: var(--color-diagram-label); font: 12px var(--font-mono); letter-spacing: 1px; }
   @media (max-width: 72rem) { svg { min-width: 1400px; } }
 </style>

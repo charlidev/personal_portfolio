@@ -243,7 +243,8 @@ const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
     padding: 1.25rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: rgb(11 83 81 / 18%);
+    background: var(--color-content-card-background);
+    box-shadow: var(--color-card-shadow);
   }
   .content-card h3, .content-card h4 { margin: 0; font-size: var(--text-lg); line-height: 1.35; }
   .content-card > p { color: var(--color-text-muted); }
@@ -252,7 +253,7 @@ const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
   .layer-card .eyebrow { color: var(--color-accent); }
   .layer-card h3 { margin-top: 0.5rem; }
   .component-card code, .step-file, .metric-list code {
-    color: var(--color-highlight);
+    color: var(--color-inline-code);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     overflow-wrap: anywhere;
@@ -301,7 +302,7 @@ const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
   .measure-grid article { min-width: 0; padding-top: 0.75rem; border-top: 1px solid var(--color-border); }
   .measure-grid ul { margin: 0.6rem 0 0; padding: 0; list-style: none; }
   .measure-grid li { margin-top: 0.45rem; }
-  .measure-grid code { color: var(--color-highlight); font-family: var(--font-mono); font-size: var(--text-xs); overflow-wrap: anywhere; }
+  .measure-grid code { color: var(--color-inline-code); font-family: var(--font-mono); font-size: var(--text-xs); overflow-wrap: anywhere; }
   .future-grid section { padding-top: 1rem; border-top: 1px solid var(--color-border); }
   .future-grid h3 { margin: 0; font-size: var(--text-lg); }
   .future-grid ul { padding-left: 1.2rem; }

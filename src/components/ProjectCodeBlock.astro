@@ -90,8 +90,8 @@ const highlight = (source: string) => {
     overflow: auto;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
-    background: rgb(0 0 0 / 18%);
-    color: var(--color-text);
+    background: var(--color-code-background);
+    color: var(--color-code-text);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     line-height: 1.7;
@@ -99,16 +99,17 @@ const highlight = (source: string) => {
   }
 
   .code-example a {
+    color: var(--color-code-link);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     overflow-wrap: anywhere;
   }
   .supporting-code h4 { margin: 1.25rem 0 0; font-size: var(--text-base); }
 
-  :global(.token-keyword) { color: var(--color-highlight); }
-  :global(.token-string) { color: var(--color-accent); }
-  :global(.token-number) { color: var(--color-secondary); }
-  :global(.token-comment) { color: var(--color-text-muted); }
+  :global(.token-keyword) { color: var(--color-code-keyword); }
+  :global(.token-string) { color: var(--color-code-string); }
+  :global(.token-number) { color: var(--color-code-number); }
+  :global(.token-comment) { color: var(--color-code-comment); }
 
   @media (max-width: 38rem) {
     .code-example-heading { flex-direction: column; }

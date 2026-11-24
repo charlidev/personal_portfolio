@@ -31,12 +31,64 @@ const englishAlternatePath = customEnglishPath ?? '/en/';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#092327" />
+    <meta name="theme-color" content="#092327" data-theme-color />
     <link rel="canonical" href={canonicalPath} />
     <link rel="alternate" hreflang="es" href={spanishAlternatePath} />
     <link rel="alternate" hreflang="en" href={englishAlternatePath} />
     <link rel="alternate" hreflang="x-default" href={spanishAlternatePath} />
     <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const themeKey = 'portfolio-theme';
+        const isTheme = (value) => value === 'dark' || value === 'light';
+        let theme = 'dark';
+
+        try {
+          const savedTheme = window.localStorage.getItem(themeKey);
+          if (isTheme(savedTheme)) theme = savedTheme;
+        } catch {
+          // Keep the dark theme when browser storage is unavailable.
+        }
+
+        const applyTheme = (nextTheme) => {
+          const validTheme = isTheme(nextTheme) ? nextTheme : 'dark';
+          document.documentElement.dataset.theme = validTheme;
+          document.querySelector('[data-theme-color]')?.setAttribute(
+            'content',
+            validTheme === 'light' ? '#F3F8F7' : '#092327',
+          );
+
+          document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+            const isLight = validTheme === 'light';
+            button.setAttribute('aria-pressed', String(isLight));
+            button.setAttribute('aria-label', isLight ? button.dataset.labelDark : button.dataset.labelLight);
+          });
+        };
+
+        applyTheme(theme);
+        document.addEventListener('DOMContentLoaded', () => applyTheme(theme), { once: true });
+
+        document.addEventListener('click', (event) => {
+          const button = event.target instanceof Element
+            ? event.target.closest('[data-theme-toggle]')
+            : null;
+          if (!button) return;
+
+          const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+          applyTheme(nextTheme);
+          try {
+            window.localStorage.setItem(themeKey, nextTheme);
+          } catch {
+            // The selected theme still applies for the current page.
+          }
+        });
+
+        window.addEventListener('storage', (event) => {
+          if (event.key !== themeKey) return;
+          applyTheme(isTheme(event.newValue) ? event.newValue : 'dark');
+        });
+      })();
+    </script>
   </head>
   <body>
     <slot />

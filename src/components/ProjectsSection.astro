@@ -59,7 +59,8 @@ const { projects } = getPortfolioData(locale);
     padding: 1.5rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: rgb(11 83 81 / 16%);
+    background: var(--color-card-background);
+    box-shadow: var(--color-card-shadow);
   }
 
   .project-index {
@@ -87,13 +88,13 @@ const { projects } = getPortfolioData(locale);
   }
 
   .project-technologies span {
-    color: var(--color-highlight);
+    color: var(--color-link);
   }
 
   .project-link {
     margin-top: auto;
     padding-top: 1.5rem;
-    color: var(--color-highlight);
+    color: var(--color-link);
     font-size: var(--text-sm);
   }
 

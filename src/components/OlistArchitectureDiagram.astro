@@ -33,9 +33,9 @@ const { copy, labels: diagram } = Astro.props;
       <g class="flow-node source"><rect x="20" y="38" width="160" height="80" rx="12" /><text x="100" y="71">{diagram.source}</text><text class="node-subtitle" x="100" y="95">CSV</text></g>
       <g class="flow-node"><rect x="220" y="38" width="160" height="80" rx="12" /><text x="300" y="71">{diagram.landing}</text></g>
       <g class="flow-node"><rect x="420" y="38" width="160" height="80" rx="12" /><text x="500" y="71">Databricks</text><text class="node-subtitle" x="500" y="95">Auto Loader</text></g>
-      <g class="flow-node layer"><rect x="620" y="38" width="160" height="80" rx="12" /><text x="700" y="83">{diagram.bronze}</text></g>
-      <g class="flow-node layer"><rect x="820" y="38" width="160" height="80" rx="12" /><text x="900" y="83">{diagram.silver}</text></g>
-      <g class="flow-node layer"><rect x="1020" y="38" width="160" height="80" rx="12" /><text x="1100" y="83">{diagram.gold}</text></g>
+      <g class="flow-node layer bronze"><rect x="620" y="38" width="160" height="80" rx="12" /><text x="700" y="83">{diagram.bronze}</text></g>
+      <g class="flow-node layer silver"><rect x="820" y="38" width="160" height="80" rx="12" /><text x="900" y="83">{diagram.silver}</text></g>
+      <g class="flow-node layer gold"><rect x="1020" y="38" width="160" height="80" rx="12" /><text x="1100" y="83">{diagram.gold}</text></g>
 
       <g class="flow-node audit"><rect x="615" y="210" width="170" height="54" rx="10" /><text x="700" y="243">{diagram.audit}</text></g>
       {diagram.outputs.map((output, index) => {
@@ -54,17 +54,20 @@ const { copy, labels: diagram } = Astro.props;
     overflow-x: auto;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: rgb(11 83 81 / 12%);
+    background: var(--color-diagram-background);
     scrollbar-color: var(--color-secondary) transparent;
   }
   svg { display: block; width: 100%; min-width: 0; height: auto; }
   .flow-lines { fill: none; stroke: var(--color-secondary); stroke-width: 2; marker-end: url(#arrowhead); }
   .flow-lines path:nth-child(7), .flow-lines path:nth-child(8) { marker-end: none; }
   marker polygon { fill: var(--color-secondary); }
-  .flow-node rect { fill: var(--color-background); stroke: var(--color-border); stroke-width: 1.5; }
-  .flow-node.layer rect { fill: rgb(11 83 81 / 55%); stroke: var(--color-accent); }
+  .flow-node rect { fill: var(--color-diagram-node-background); stroke: var(--color-diagram-node-border); stroke-width: 1.5; }
+  .flow-node.layer rect { fill: var(--color-diagram-layer-silver); stroke: var(--color-accent); }
+  :global([data-theme='light']) .flow-node.layer.bronze rect { fill: var(--color-diagram-layer-bronze); }
+  :global([data-theme='light']) .flow-node.layer.silver rect { fill: var(--color-diagram-layer-silver); }
+  :global([data-theme='light']) .flow-node.layer.gold rect { fill: var(--color-diagram-layer-gold); }
   .flow-node.audit rect { stroke: var(--color-secondary); }
-  .flow-node.output rect { fill: rgb(11 83 81 / 22%); }
+  .flow-node.output rect { fill: var(--color-diagram-output); }
   .flow-node text { fill: var(--color-text); font: 600 15px var(--font-sans); text-anchor: middle; }
   .flow-node .node-subtitle { fill: var(--color-text-muted); font: 12px var(--font-mono); }
 

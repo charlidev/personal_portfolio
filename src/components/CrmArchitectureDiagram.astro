@@ -24,9 +24,9 @@ const { title, description, labels } = Astro.props;
       </g>
       <g class="flow-node source"><rect x="10" y="34" width="160" height="80" rx="12" /><text x="90" y="68">{labels.source}</text><text class="node-subtitle" x="90" y="93">CSV</text></g>
       <g class="flow-node"><rect x="210" y="34" width="160" height="80" rx="12" /><text x="290" y="68">Databricks</text><text class="node-subtitle" x="290" y="93">{labels.ingestion}</text></g>
-      <g class="flow-node layer"><rect x="410" y="34" width="160" height="80" rx="12" /><text x="490" y="80">{labels.bronze}</text></g>
-      <g class="flow-node quality"><rect x="610" y="34" width="160" height="80" rx="12" /><text x="690" y="68">{labels.silver}</text><text class="node-subtitle" x="690" y="93">3 expect_or_drop rules</text></g>
-      <g class="flow-node layer"><rect x="810" y="34" width="160" height="80" rx="12" /><text x="890" y="80">{labels.gold}</text></g>
+      <g class="flow-node layer bronze"><rect x="410" y="34" width="160" height="80" rx="12" /><text x="490" y="80">{labels.bronze}</text></g>
+      <g class="flow-node quality silver"><rect x="610" y="34" width="160" height="80" rx="12" /><text x="690" y="68">{labels.silver}</text><text class="node-subtitle" x="690" y="93">3 expect_or_drop rules</text></g>
+      <g class="flow-node layer gold"><rect x="810" y="34" width="160" height="80" rx="12" /><text x="890" y="80">{labels.gold}</text></g>
       <g class="flow-node output"><rect x="270" y="220" width="160" height="120" rx="12" /><text x="350" y="273">{labels.dimension}</text><text class="node-subtitle" x="350" y="300">Customer_ID</text></g>
       <g class="flow-node output"><rect x="540" y="220" width="160" height="120" rx="12" /><text x="620" y="273">{labels.purchaseFact}</text><text class="node-subtitle" x="620" y="300">Customer_ID</text></g>
       <g class="flow-node output"><rect x="810" y="220" width="160" height="120" rx="12" /><text x="890" y="273">{labels.campaignFact}</text><text class="node-subtitle" x="890" y="300">Customer_ID</text></g>
@@ -42,17 +42,21 @@ const { title, description, labels } = Astro.props;
 <style>
   .architecture-figure { margin: 2.25rem 0 0; }
   figcaption { margin-bottom: 0.85rem; font-weight: 600; }
-  .diagram-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: rgb(11 83 81 / 12%); scrollbar-color: var(--color-secondary) transparent; }
+  .diagram-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-diagram-background); scrollbar-color: var(--color-secondary) transparent; }
   svg { display: block; width: 100%; min-width: 0; height: auto; }
   .flow-lines { fill: none; stroke: var(--color-secondary); stroke-width: 2; marker-end: url(#crm-arrow); }
   marker polygon { fill: var(--color-secondary); }
-  .flow-node rect { fill: var(--color-background); stroke: var(--color-border); stroke-width: 1.5; }
-  .flow-node.layer rect { fill: rgb(11 83 81 / 55%); stroke: var(--color-accent); }
-  .flow-node.quality rect { stroke: var(--color-highlight); }
-  .flow-node.output rect { fill: rgb(11 83 81 / 22%); }
-  .flow-node.ci rect { fill: rgb(11 83 81 / 22%); stroke: var(--color-secondary); }
+  .flow-node rect { fill: var(--color-diagram-node-background); stroke: var(--color-diagram-node-border); stroke-width: 1.5; }
+  .flow-node.layer rect { fill: var(--color-diagram-layer-silver); stroke: var(--color-accent); }
+  :global([data-theme='light']) .flow-node.layer.bronze rect { fill: var(--color-diagram-layer-bronze); }
+  :global([data-theme='light']) .flow-node.layer.silver rect,
+  :global([data-theme='light']) .flow-node.quality.silver rect { fill: var(--color-diagram-layer-silver); }
+  :global([data-theme='light']) .flow-node.layer.gold rect { fill: var(--color-diagram-layer-gold); }
+  .flow-node.quality rect { stroke: var(--color-diagram-emphasis-border); }
+  .flow-node.output rect { fill: var(--color-diagram-output); }
+  .flow-node.ci rect { fill: var(--color-diagram-output); stroke: var(--color-secondary); }
   .flow-node text { fill: var(--color-text); font: 600 15px var(--font-sans); text-anchor: middle; }
   .flow-node .node-subtitle { fill: var(--color-text-muted); font: 12px var(--font-mono); }
-  .section-label { fill: var(--color-highlight); font: 12px var(--font-mono); letter-spacing: 1px; }
+  .section-label { fill: var(--color-diagram-label); font: 12px var(--font-mono); letter-spacing: 1px; }
   @media (max-width: 72rem) { svg { min-width: 1120px; } }
 </style>

@@ -1,19 +1,67 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
 
-:root {
+:root,
+:root[data-theme='dark'] {
   color-scheme: dark;
 
-  /* Palette */
+  /* Theme palette and semantic colors (dark preserves the approved values). */
   --color-background: #092327;
   --color-surface: #0b5351;
+  --color-surface-muted: #0b5351;
   --color-accent: #00a9a5;
   --color-secondary: #4e8098;
   --color-highlight: #90c2e7;
   --color-text: #f2f7f6;
   --color-text-muted: #b5c8c7;
+  --color-text-subtle: #91a9a8;
   --color-border: rgb(242 247 246 / 14%);
+  --color-border-strong: rgb(242 247 246 / 22%);
   --color-focus: #90c2e7;
+  --color-link: #90c2e7;
+  --color-eyebrow: #90c2e7;
+  --color-header-background: #092327;
+  --color-navigation-link: #b5c8c7;
+  --color-navigation-hover: rgb(242 247 246 / 6%);
+  --color-navigation-shadow: rgb(0 0 0 / 22%);
+  --color-button-primary-background: #00a9a5;
+  --color-button-primary-text: #092327;
+  --color-button-primary-hover-background: #90c2e7;
+  --color-button-primary-hover-text: #092327;
+  --color-button-secondary-text: #f2f7f6;
+  --color-button-secondary-hover-text: #90c2e7;
+  --color-button-secondary-hover-border: #90c2e7;
+  --color-language-link: #f2f7f6;
+  --color-card-background: rgb(11 83 81 / 16%);
+  --color-content-card-background: rgb(11 83 81 / 18%);
+  --color-summary-background: rgb(11 83 81 / 22%);
+  --color-summary-mark-background: rgb(11 83 81 / 28%);
+  --color-course-area-background: rgb(11 83 81 / 35%);
+  --color-diagram-background: rgb(11 83 81 / 12%);
+  --color-diagram-node-background: #092327;
+  --color-diagram-node-border: rgb(242 247 246 / 14%);
+  --color-diagram-layer-bronze: rgb(11 83 81 / 55%);
+  --color-diagram-layer-silver: rgb(11 83 81 / 55%);
+  --color-diagram-layer-gold: rgb(11 83 81 / 55%);
+  --color-diagram-layer-soft: rgb(11 83 81 / 45%);
+  --color-diagram-emphasis-border: #90c2e7;
+  --color-diagram-label: #90c2e7;
+  --color-diagram-output: rgb(11 83 81 / 22%);
+  --color-diagram-complement: rgb(11 83 81 / 14%);
+  --color-timeline-line: rgb(78 128 152 / 58%);
+  --color-timeline-node: #00a9a5;
+  --color-tag-background: rgb(11 83 81 / 16%);
+  --color-tag-text: #f2f7f6;
+  --color-project-tag-background: transparent;
+  --color-code-background: rgb(0 0 0 / 18%);
+  --color-code-text: #f2f7f6;
+  --color-code-link: #90c2e7;
+  --color-code-keyword: #90c2e7;
+  --color-code-string: #00a9a5;
+  --color-code-number: #4e8098;
+  --color-code-comment: #b5c8c7;
+  --color-inline-code: #90c2e7;
+  --color-card-shadow: none;
 
   /* Typography */
   --font-sans: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -42,6 +90,67 @@
   --radius-lg: 1rem;
 }
 
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --color-background: #f3f8f7;
+  --color-surface: #ffffff;
+  --color-surface-muted: #e9f2f0;
+  --color-accent: #007f7a;
+  --color-secondary: #3e6f83;
+  --color-highlight: #d8eaf4;
+  --color-text: #102f32;
+  --color-text-muted: #526b6d;
+  --color-text-subtle: #526b6d;
+  --color-border: #d6e3e1;
+  --color-border-strong: #b5cfcb;
+  --color-focus: #007f7a;
+  --color-link: #007f7a;
+  --color-eyebrow: #3e6f83;
+  --color-header-background: #f3f8f7;
+  --color-navigation-link: #007f7a;
+  --color-navigation-hover: #e9f2f0;
+  --color-navigation-shadow: rgb(16 47 50 / 12%);
+  --color-button-primary-background: #007f7a;
+  --color-button-primary-text: #ffffff;
+  --color-button-primary-hover-background: #3e6f83;
+  --color-button-primary-hover-text: #ffffff;
+  --color-button-secondary-text: #102f32;
+  --color-button-secondary-hover-text: #007f7a;
+  --color-button-secondary-hover-border: #007f7a;
+  --color-language-link: #007f7a;
+  --color-card-background: #ffffff;
+  --color-content-card-background: #ffffff;
+  --color-summary-background: #ffffff;
+  --color-summary-mark-background: #e9f2f0;
+  --color-course-area-background: #e9f2f0;
+  --color-diagram-background: #e9f2f0;
+  --color-diagram-node-background: #ffffff;
+  --color-diagram-node-border: #d6e3e1;
+  --color-diagram-layer-bronze: #e9f2f0;
+  --color-diagram-layer-silver: #d8eaf4;
+  --color-diagram-layer-gold: #c4e4dd;
+  --color-diagram-layer-soft: #e9f2f0;
+  --color-diagram-emphasis-border: #3e6f83;
+  --color-diagram-label: #3e6f83;
+  --color-diagram-output: #ffffff;
+  --color-diagram-complement: #e9f2f0;
+  --color-timeline-line: #3e6f83;
+  --color-timeline-node: #007f7a;
+  --color-tag-background: #e9f2f0;
+  --color-tag-text: #102f32;
+  --color-project-tag-background: #e9f2f0;
+  --color-code-background: #092327;
+  --color-code-text: #f2f7f6;
+  --color-code-link: #90c2e7;
+  --color-code-keyword: #90c2e7;
+  --color-code-string: #00a9a5;
+  --color-code-number: #90c2e7;
+  --color-code-comment: #b5c8c7;
+  --color-inline-code: #007f7a;
+  --color-card-shadow: 0 0.75rem 2rem rgb(16 47 50 / 6%);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -56,6 +165,7 @@ body {
   margin: 0;
   background: var(--color-background);
   color: var(--color-text);
+  transition: background-color 180ms ease, color 180ms ease;
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: 1.65;
@@ -69,12 +179,69 @@ a {
 }
 
 a {
-  color: var(--color-highlight);
+  color: var(--color-link);
   text-underline-offset: 0.2em;
 }
 
 a:hover {
   color: var(--color-text);
+}
+
+.theme-toggle {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-navigation-link);
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.site-header,
+.detail-navigation,
+.project,
+.certification-card,
+.course-card,
+.course-badge-area,
+.content-card,
+.summary-card,
+.diagram-scroll,
+.skill-group li,
+.tool-group li {
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  background: var(--color-navigation-hover);
+  color: var(--color-text);
+}
+
+.theme-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+:root[data-theme='dark'] .theme-icon-moon,
+:root:not([data-theme='light']) .theme-icon-moon,
+:root[data-theme='light'] .theme-icon-sun {
+  display: none;
+}
+
+:root[data-theme='dark'] .theme-icon-sun,
+:root:not([data-theme='light']) .theme-icon-sun,
+:root[data-theme='light'] .theme-icon-moon {
+  display: block;
 }
 
 :focus-visible {
@@ -94,13 +261,20 @@ a:hover {
 
 .eyebrow {
   margin: 0;
-  color: var(--color-highlight);
+  color: var(--color-eyebrow);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 1.5;
   text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .theme-toggle {
+    transition-duration: 0.01ms;
+  }
 }
 
 .visually-hidden {

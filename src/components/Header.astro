@@ -1,5 +1,6 @@
 ---
 import { getCopy, type Locale } from '../i18n';
+import ThemeToggle from './ThemeToggle.astro';
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -24,6 +25,7 @@ const targetPath = locale === 'es' ? '/en/' : '/';
 
     <nav id="primary-navigation" class="primary-navigation" aria-label={copy.navigationLabel}>
       {copy.navigation.map((label, index) => <a href={`#${sectionIds[index]}`}>{label}</a>)}
+      <ThemeToggle locale={locale} />
       <a class="language-switch" href={targetPath} aria-label={copy.switchLanguage} data-language-switch>
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <circle cx="12" cy="12" r="9" />
@@ -89,7 +91,7 @@ const targetPath = locale === 'es' ? '/en/' : '/';
     top: 0;
     z-index: 10;
     border-bottom: 1px solid var(--color-border);
-    background: var(--color-background);
+    background: var(--color-header-background);
   }
 
   .header-inner {
@@ -107,7 +109,7 @@ const targetPath = locale === 'es' ? '/en/' : '/';
   }
 
   .primary-navigation a {
-    color: var(--color-text-muted);
+    color: var(--color-navigation-link);
     font-size: var(--text-sm);
     text-decoration: none;
     transition: color 160ms ease;
@@ -128,7 +130,7 @@ const targetPath = locale === 'es' ? '/en/' : '/';
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    color: var(--color-text);
+    color: var(--color-language-link);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     font-weight: 400;
@@ -209,8 +211,8 @@ const targetPath = locale === 'es' ? '/en/' : '/';
       padding: 0.5rem;
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      background: var(--color-background);
-      box-shadow: 0 1rem 2rem rgb(0 0 0 / 22%);
+      background: var(--color-header-background);
+      box-shadow: 0 1rem 2rem var(--color-navigation-shadow);
     }
 
     .primary-navigation[data-enhanced='true']:not([data-open='true']) {
@@ -228,8 +230,13 @@ const targetPath = locale === 'es' ? '/en/' : '/';
       padding: 0.75rem;
     }
 
+    .primary-navigation .theme-toggle {
+      align-self: flex-start;
+      margin: 0.35rem 0.75rem;
+    }
+
     .primary-navigation a:hover {
-      background: rgb(242 247 246 / 6%);
+      background: var(--color-navigation-hover);
     }
   }
 </style>

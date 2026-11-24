@@ -19,14 +19,16 @@ const { projects } = getPortfolioData(locale);
         <p class="project-technologies">
           <span>{copy.technologies}</span> {project.technologies.join(' · ')}
         </p>
-        {project.href ? (
+        {project.detailUrl ? (
           <a
             class="project-link"
-            href={project.href}
-            target={project.external ? '_blank' : undefined}
-            rel={project.external ? 'noopener noreferrer' : undefined}
+            href={project.detailUrl}
           >
-            {copy.viewProject} <span aria-hidden="true">↗</span>
+            {copy.viewProject} <span aria-hidden="true">→</span>
+          </a>
+        ) : project.repositoryUrl ? (
+          <a class="project-link" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
+            {copy.viewRepository} <span aria-hidden="true">↗</span>
           </a>
         ) : (
           <span class="project-link">{copy.projectPagePending}</span>
@@ -57,7 +59,8 @@ const { projects } = getPortfolioData(locale);
     padding: 1.5rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    background: rgb(11 83 81 / 16%);
+    background: var(--color-card-background);
+    box-shadow: var(--color-card-shadow);
   }
 
   .project-index {
@@ -85,13 +88,13 @@ const { projects } = getPortfolioData(locale);
   }
 
   .project-technologies span {
-    color: var(--color-highlight);
+    color: var(--color-link);
   }
 
   .project-link {
     margin-top: auto;
     padding-top: 1.5rem;
-    color: var(--color-highlight);
+    color: var(--color-link);
     font-size: var(--text-sm);
   }
 

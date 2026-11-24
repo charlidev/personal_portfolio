@@ -1,0 +1,77 @@
+---
+import type { OlistProjectCopy } from '../i18n/olistProject';
+
+interface Props {
+  copy: Pick<OlistProjectCopy, 'diagramTitle' | 'diagramDescription'>;
+  labels: NonNullable<OlistProjectCopy['diagramLabels']>;
+}
+const { copy, labels: diagram } = Astro.props;
+---
+
+<figure class="architecture-figure" aria-labelledby="architecture-diagram-title">
+  <figcaption id="architecture-diagram-title">{copy.diagramTitle}</figcaption>
+  <div class="diagram-scroll" tabindex="0" aria-label={copy.diagramDescription}>
+    <svg viewBox="0 0 1260 360" role="img" aria-labelledby="diagram-title diagram-description">
+      <title id="diagram-title">{copy.diagramTitle}</title>
+      <desc id="diagram-description">{copy.diagramDescription}</desc>
+      <defs>
+        <marker id="arrowhead" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+          <polygon points="0 0, 9 3.5, 0 7" />
+        </marker>
+      </defs>
+
+      <g class="flow-lines">
+        <path d="M180 78 H218" /><path d="M380 78 H418" /><path d="M580 78 H618" />
+        <path d="M780 78 H818" /><path d="M980 78 H1018" />
+        <path d="M700 118 V210" />
+        <path d="M1100 118 V190 H120 V235" />
+        <path d="M130 235 H1090" />
+        <path d="M120 235 V285" /><path d="M340 235 V285" /><path d="M560 235 V285" />
+        <path d="M780 235 V285" /><path d="M1000 235 V285" />
+      </g>
+
+      <g class="flow-node source"><rect x="20" y="38" width="160" height="80" rx="12" /><text x="100" y="71">{diagram.source}</text><text class="node-subtitle" x="100" y="95">CSV</text></g>
+      <g class="flow-node"><rect x="220" y="38" width="160" height="80" rx="12" /><text x="300" y="71">{diagram.landing}</text></g>
+      <g class="flow-node"><rect x="420" y="38" width="160" height="80" rx="12" /><text x="500" y="71">Databricks</text><text class="node-subtitle" x="500" y="95">Auto Loader</text></g>
+      <g class="flow-node layer bronze"><rect x="620" y="38" width="160" height="80" rx="12" /><text x="700" y="83">{diagram.bronze}</text></g>
+      <g class="flow-node layer silver"><rect x="820" y="38" width="160" height="80" rx="12" /><text x="900" y="83">{diagram.silver}</text></g>
+      <g class="flow-node layer gold"><rect x="1020" y="38" width="160" height="80" rx="12" /><text x="1100" y="83">{diagram.gold}</text></g>
+
+      <g class="flow-node audit"><rect x="615" y="210" width="170" height="54" rx="10" /><text x="700" y="243">{diagram.audit}</text></g>
+      {diagram.outputs.map((output, index) => {
+        const x = 20 + index * 220;
+        return <g class="flow-node output"><rect x={x} y="285" width="200" height="52" rx="10" /><text x={x + 100} y="317">{output}</text></g>;
+      })}
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .architecture-figure { margin: 2.25rem 0 0; }
+  figcaption { margin-bottom: 0.85rem; font-weight: 600; }
+  .diagram-scroll {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-diagram-background);
+    scrollbar-color: var(--color-secondary) transparent;
+  }
+  svg { display: block; width: 100%; min-width: 0; height: auto; }
+  .flow-lines { fill: none; stroke: var(--color-secondary); stroke-width: 2; marker-end: url(#arrowhead); }
+  .flow-lines path:nth-child(7), .flow-lines path:nth-child(8) { marker-end: none; }
+  marker polygon { fill: var(--color-secondary); }
+  .flow-node rect { fill: var(--color-diagram-node-background); stroke: var(--color-diagram-node-border); stroke-width: 1.5; }
+  .flow-node.layer rect { fill: var(--color-diagram-layer-silver); stroke: var(--color-accent); }
+  :global([data-theme='light']) .flow-node.layer.bronze rect { fill: var(--color-diagram-layer-bronze); }
+  :global([data-theme='light']) .flow-node.layer.silver rect { fill: var(--color-diagram-layer-silver); }
+  :global([data-theme='light']) .flow-node.layer.gold rect { fill: var(--color-diagram-layer-gold); }
+  .flow-node.audit rect { stroke: var(--color-secondary); }
+  .flow-node.output rect { fill: var(--color-diagram-output); }
+  .flow-node text { fill: var(--color-text); font: 600 15px var(--font-sans); text-anchor: middle; }
+  .flow-node .node-subtitle { fill: var(--color-text-muted); font: 12px var(--font-mono); }
+
+  @media (max-width: 72rem) {
+    svg { min-width: 1260px; }
+  }
+</style>

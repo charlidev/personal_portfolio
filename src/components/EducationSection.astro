@@ -568,7 +568,7 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
     width: 4px;
     align-self: stretch;
     border-radius: 2px;
-    background: #00a9a5;
+    background: var(--color-timeline-node);
   }
 
   .education-list {
@@ -604,7 +604,8 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
     padding: clamp(1rem, 2.5vw, 1.5rem);
     border: 1px solid var(--color-border);
     border-radius: 0.75rem;
-    background: rgb(11 83 81 / 18%);
+    background: var(--color-card-background);
+    box-shadow: var(--color-card-shadow);
   }
 
   .certification-image {
@@ -680,7 +681,7 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
     padding: 0.25rem 0.55rem;
     border: 1px solid var(--color-border);
     border-radius: 999px;
-    color: var(--color-highlight);
+    color: var(--color-link);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     line-height: 1.5;
@@ -780,7 +781,8 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: 0.75rem;
-    background: rgb(11 83 81 / 18%);
+    background: var(--color-content-card-background);
+    box-shadow: var(--color-card-shadow);
   }
 
   .course-badge-area {
@@ -789,7 +791,7 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
     place-items: center;
     padding: 1rem;
     border-bottom: 1px solid var(--color-border);
-    background: rgb(11 83 81 / 35%);
+    background: var(--color-course-area-background);
   }
 
   .course-badge-area img {
@@ -1026,7 +1028,7 @@ const { academyCourses, certifications, educationEntries } = getPortfolioData(lo
     padding: 0.1rem 0.55rem;
     border: 1px solid var(--color-border);
     border-radius: 999px;
-    color: var(--color-highlight);
+    color: var(--color-link);
     font-size: var(--text-xs);
   }
 

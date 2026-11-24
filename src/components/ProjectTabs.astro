@@ -1,0 +1,320 @@
+---
+import OlistArchitectureDiagram from './OlistArchitectureDiagram.astro';
+import CrmArchitectureDiagram from './CrmArchitectureDiagram.astro';
+import AiJobImpactDiagram from './AiJobImpactDiagram.astro';
+import ProjectCodeBlock from './ProjectCodeBlock.astro';
+import type { OlistProjectCopy } from '../i18n/olistProject';
+
+interface Props { copy: OlistProjectCopy }
+const { copy } = Astro.props;
+const tabIds = ['architecture', 'components', 'workflow', 'code', 'results'];
+---
+
+<div class="project-tabs" data-project-tabs>
+  <div class="tab-scroller">
+    <div class="tab-list" role="tablist" aria-label={copy.projectNavigationLabel} aria-orientation="horizontal">
+      {copy.tabs.map((tab, index) => (
+        <button
+          id={`project-tab-${tabIds[index]}`}
+          class="project-tab"
+          type="button"
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          aria-controls={`project-panel-${tabIds[index]}`}
+          tabindex={index === 0 ? 0 : -1}
+          data-tab-index={index}
+        >{tab}</button>
+      ))}
+    </div>
+  </div>
+
+  <section id="project-panel-architecture" class="tab-panel" role="tabpanel" aria-labelledby="project-tab-architecture" tabindex="0">
+    <h2>{copy.architectureTitle}</h2>
+    <div class="layer-grid">
+      {copy.architectureLayers.map((layer, index) => (
+        <article class="content-card layer-card">
+          <p class="eyebrow">{layer.eyebrow ?? `0${index + 1} / MEDALLION`}</p>
+          <h3>{layer.title}</h3>
+          <p>{layer.description}</p>
+          <ul>{layer.bullets.map((item) => <li>{item}</li>)}</ul>
+        </article>
+      ))}
+    </div>
+    {copy.aiDiagramLabels ? (
+      <AiJobImpactDiagram title={copy.diagramTitle} description={copy.diagramDescription} architectureLabels={copy.aiDiagramLabels} />
+    ) : copy.crmDiagramLabels ? (
+      <CrmArchitectureDiagram title={copy.diagramTitle} description={copy.diagramDescription} labels={copy.crmDiagramLabels} />
+    ) : copy.diagramLabels && <OlistArchitectureDiagram copy={copy} labels={copy.diagramLabels} />}
+  </section>
+
+  <section id="project-panel-components" class="tab-panel" role="tabpanel" aria-labelledby="project-tab-components" tabindex="0" hidden>
+    <h2>{copy.componentsTitle}</h2>
+    <div class="component-grid">
+      {copy.components.map((card) => (
+        <article class="content-card component-card">
+          <h3>{card.title}</h3>
+          <p>{card.description}</p>
+          {card.bullets.length > 0 && <ul>{card.bullets.map((item) => <li>{item}</li>)}</ul>}
+          {card.code && <ul class="file-list">{card.code.map((file) => <li><code>{file}</code></li>)}</ul>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="project-panel-workflow" class="tab-panel" role="tabpanel" aria-labelledby="project-tab-workflow" tabindex="0" hidden>
+    <h2>{copy.workflowTitle}</h2>
+    <p class="panel-intro">{copy.workflowIntro}</p>
+    <ol class="workflow-list">
+      {copy.workflow.map((step, index) => (
+        <li class="workflow-step">
+          <span class="step-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <div class="step-content">
+            <h3>{step.title}</h3>
+            {step.file && <code class="step-file">{step.file}</code>}
+            <p>{step.description}</p>
+            {step.bullets && <ul>{step.bullets.map((item) => <li>{item}</li>)}</ul>}
+          </div>
+        </li>
+      ))}
+    </ol>
+    {copy.aiWorkflowLabels && copy.workflowDiagramTitle && copy.workflowDiagramDescription && (
+      <AiJobImpactDiagram title={copy.workflowDiagramTitle} description={copy.workflowDiagramDescription} workflowLabels={copy.aiWorkflowLabels} />
+    )}
+    <p class="callout">{copy.workflowNote}</p>
+  </section>
+
+  <section id="project-panel-code" class="tab-panel" role="tabpanel" aria-labelledby="project-tab-code" tabindex="0" hidden>
+    <h2>{copy.codeTitle}</h2>
+    {copy.codeExamples.map((example) => <ProjectCodeBlock example={example} />)}
+  </section>
+
+  <section id="project-panel-results" class="tab-panel" role="tabpanel" aria-labelledby="project-tab-results" tabindex="0" hidden>
+    <h2>{copy.resultsTitle}</h2>
+    <div class="result-grid">
+      {copy.resultCards.map((card, index) => (
+        <article class="content-card result-card">
+          <h3>{card.title}</h3>
+          <p>{card.description}</p>
+          {card.bullets.length > 0 && <ul>{card.bullets.map((item) => <li>{item}</li>)}</ul>}
+          {index === 1 && copy.domains && (
+            <div class="domain-grid">
+              {copy.domains.map((domain) => (
+                <div class="domain-card">
+                  <h4>{domain.title}</h4>
+                  <p>{domain.description}</p>
+                  <ul class="metric-list">{domain.bullets.map((metric) => <li><code>{metric}</code></li>)}</ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+
+    {copy.evidence && (
+      <section class="evidence-section">
+        <h3>{copy.evidence.title}</h3>
+        <p>{copy.evidence.description}</p>
+        <ul class="evidence-links">
+          {copy.evidence.links.map((link) => <li><a href={link.url} target="_blank" rel="noopener noreferrer">{link.label} <span aria-hidden="true">↗</span></a></li>)}
+        </ul>
+      </section>
+    )}
+
+    {copy.semanticModel && (
+      <section class="semantic-model">
+        <h3>{copy.semanticModel.title}</h3>
+        <p>{copy.semanticModel.description}</p>
+        <ul class="relation-list">{copy.semanticModel.relations.map((item) => <li>{item}</li>)}</ul>
+        <div class="measure-grid">
+          {copy.semanticModel.measureGroups.map((group) => (
+            <article><h4>{group.title}</h4><ul>{group.measures.map((measure) => <li><code>{measure}</code></li>)}</ul></article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <div class:list={['future-grid', { 'roadmap-only': copy.limitations.length === 0 }]}>
+      {copy.limitations.length > 0 && <section>
+        <h3>{copy.limitationsTitle}</h3>
+        <ul>{copy.limitations.map((item) => <li>{item}</li>)}</ul>
+      </section>}
+      <section>
+        <h3>{copy.roadmapTitle}</h3>
+        <ul>{copy.roadmap.map((item) => <li>{item}</li>)}</ul>
+      </section>
+    </div>
+  </section>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-project-tabs]');
+
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    const activateTab = (index: number, moveFocus = false) => {
+      tabs.forEach((tab, tabIndex) => {
+        const selected = tabIndex === index;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+
+      panels.forEach((panel, panelIndex) => { panel.hidden = panelIndex !== index; });
+
+      if (moveFocus) tabs[index]?.focus();
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activateTab(index));
+      tab.addEventListener('keydown', (event) => {
+        let nextIndex: number | undefined;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = tabs.length - 1;
+
+        if (nextIndex !== undefined) {
+          event.preventDefault();
+          activateTab(nextIndex, true);
+          tabs[nextIndex]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
+      });
+    });
+  }
+</script>
+
+<style>
+  .tab-scroller {
+    max-width: 100%;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-border);
+    scrollbar-color: var(--color-secondary) transparent;
+  }
+
+  .tab-list {
+    display: flex;
+    min-width: max-content;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: clamp(0.5rem, 2vw, 1.75rem);
+  }
+
+  .project-tab {
+    position: relative;
+    min-height: 3.5rem;
+    padding: 0.75rem 0.2rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .project-tab[aria-selected='true'] { color: var(--color-text); }
+  .project-tab[aria-selected='true']::after {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--color-accent);
+    content: '';
+  }
+  .project-tab:focus-visible { outline-offset: -3px; }
+
+  .tab-panel { min-width: 0; }
+  .tab-panel[hidden] { display: none; }
+  .tab-panel > h2 { margin: 0 0 1.5rem; font-size: var(--text-2xl); line-height: 1.25; }
+  .panel-intro { max-width: 72ch; margin: -0.5rem 0 1.5rem; color: var(--color-text-muted); }
+
+  .layer-grid, .component-grid, .result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--component-gap);
+  }
+  .component-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .result-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .content-card {
+    min-width: 0;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-content-card-background);
+    box-shadow: var(--color-card-shadow);
+  }
+  .content-card h3, .content-card h4 { margin: 0; font-size: var(--text-lg); line-height: 1.35; }
+  .content-card > p { color: var(--color-text-muted); }
+  .content-card ul, .step-content ul { margin: 0.85rem 0 0; padding-left: 1.2rem; }
+  .content-card li, .step-content li, .future-grid li { margin-top: 0.4rem; color: var(--color-text-muted); }
+  .layer-card .eyebrow { color: var(--color-accent); }
+  .layer-card h3 { margin-top: 0.5rem; }
+  .component-card code, .step-file, .metric-list code {
+    color: var(--color-inline-code);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    overflow-wrap: anywhere;
+  }
+  .file-list { list-style: none; padding-left: 0 !important; }
+  .file-list li { padding-top: 0.35rem; border-top: 1px solid var(--color-border); }
+
+  .workflow-list { position: relative; display: grid; gap: 1.75rem; margin: 0; padding: 0; list-style: none; }
+  .workflow-step { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; }
+  .step-number {
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+  .step-content { padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); }
+  .step-content h3 { margin: 0; font-size: var(--text-lg); }
+  .step-file { display: inline-block; margin-top: 0.3rem; }
+  .step-content p { margin: 0.45rem 0 0; color: var(--color-text-muted); }
+  .callout { margin-top: 1.5rem; padding-left: 1rem; border-left: 2px solid var(--color-secondary); color: var(--color-text-muted); }
+
+  .domain-grid { display: grid; gap: 1rem; margin-top: 1rem; }
+  .domain-card { padding-top: 0.8rem; border-top: 1px solid var(--color-border); }
+  .domain-card h4 { font-size: var(--text-base); }
+  .domain-card p { margin: 0.2rem 0 0; color: var(--color-text-muted); font-size: var(--text-sm); }
+  .metric-list { display: flex; flex-wrap: wrap; gap: 0.45rem; padding: 0 !important; list-style: none; }
+  .metric-list li { margin: 0; padding: 0.25rem 0.45rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+  .future-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--component-gap); margin-top: 2.5rem; }
+  .future-grid.roadmap-only { grid-template-columns: 1fr; }
+  .semantic-model { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
+  .evidence-section { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
+  .evidence-section h3 { margin: 0; font-size: var(--text-lg); }
+  .evidence-section p { color: var(--color-text-muted); }
+  .evidence-links { display: flex; flex-wrap: wrap; gap: 0.65rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+  .evidence-links a { display: inline-block; padding: 0.35rem 0.65rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: var(--text-xs); text-decoration: none; }
+  .evidence-links a:hover { border-color: var(--color-accent); }
+  .semantic-model > h3, .measure-grid h4 { margin: 0; font-size: var(--text-lg); }
+  .semantic-model > p { color: var(--color-text-muted); }
+  .relation-list { padding-left: 1.2rem; color: var(--color-text-muted); }
+  .measure-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+  .measure-grid article { min-width: 0; padding-top: 0.75rem; border-top: 1px solid var(--color-border); }
+  .measure-grid ul { margin: 0.6rem 0 0; padding: 0; list-style: none; }
+  .measure-grid li { margin-top: 0.45rem; }
+  .measure-grid code { color: var(--color-inline-code); font-family: var(--font-mono); font-size: var(--text-xs); overflow-wrap: anywhere; }
+  .future-grid section { padding-top: 1rem; border-top: 1px solid var(--color-border); }
+  .future-grid h3 { margin: 0; font-size: var(--text-lg); }
+  .future-grid ul { padding-left: 1.2rem; }
+
+  @media (max-width: 54rem) {
+    .layer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .measure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 38rem) {
+    .tab-scroller { margin-inline: calc(-1 * var(--page-gutter)); padding-inline: var(--page-gutter); }
+    .layer-grid, .component-grid, .result-grid, .domain-grid, .future-grid, .measure-grid { grid-template-columns: 1fr; }
+    .workflow-step { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 0.75rem; }
+  }
+</style>

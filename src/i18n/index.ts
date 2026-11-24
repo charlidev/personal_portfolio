@@ -147,7 +147,8 @@ const english = {
   projectDescription: '[Project description pending.]',
   pendingTechnologies: '[Pending]',
   technologies: 'Technologies:',
-  viewProject: 'View repository',
+  viewProject: 'View project',
+  viewRepository: 'View repository',
   projectPagePending: 'Individual project page pending',
   education: 'Education',
   university: 'University education',
@@ -210,7 +211,8 @@ export const spanish = {
   projectDescription: '[Descripción del proyecto pendiente.]',
   pendingTechnologies: '[Pendientes]',
   technologies: 'Tecnologías:',
-  viewProject: 'Ver repositorio',
+  viewProject: 'Ver proyecto',
+  viewRepository: 'Ver repositorio',
   projectPagePending: 'Página individual pendiente',
   education: 'Formación académica',
   university: 'Formación universitaria',
@@ -261,6 +263,7 @@ export const getPortfolioData = (locale: Locale) => {
     skillGroups: skillGroups.map((group, index) => ({ ...group, name: english.skills[index] })),
     projects: projects.map((project, index) => ({
       ...project,
+      detailUrl: index === 0 ? '/en/projects/olist/' : index === 1 ? '/en/projects/crm-marketing/' : index === 2 ? '/en/projects/ai-job-impact/' : project.detailUrl,
       title: index === 0
         ? english.olistProjectTitle
         : index === 1

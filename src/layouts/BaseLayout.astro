@@ -6,15 +6,23 @@ interface Props {
   locale: Locale;
   title?: string;
   description?: string;
+  canonicalPath?: string;
+  spanishAlternatePath?: string;
+  englishAlternatePath?: string;
 }
 
 const {
   locale,
   title,
   description,
+  canonicalPath: customCanonicalPath,
+  spanishAlternatePath: customSpanishPath,
+  englishAlternatePath: customEnglishPath,
 } = Astro.props;
 const isEnglish = locale === 'en';
-const canonicalPath = isEnglish ? '/en/' : '/';
+const canonicalPath = customCanonicalPath ?? (isEnglish ? '/en/' : '/');
+const spanishAlternatePath = customSpanishPath ?? '/';
+const englishAlternatePath = customEnglishPath ?? '/en/';
 ---
 
 <!doctype html>
@@ -25,9 +33,9 @@ const canonicalPath = isEnglish ? '/en/' : '/';
     <meta name="description" content={description} />
     <meta name="theme-color" content="#092327" />
     <link rel="canonical" href={canonicalPath} />
-    <link rel="alternate" hreflang="es" href="/" />
-    <link rel="alternate" hreflang="en" href="/en/" />
-    <link rel="alternate" hreflang="x-default" href="/" />
+    <link rel="alternate" hreflang="es" href={spanishAlternatePath} />
+    <link rel="alternate" hreflang="en" href={englishAlternatePath} />
+    <link rel="alternate" hreflang="x-default" href={spanishAlternatePath} />
     <title>{title}</title>
   </head>
   <body>

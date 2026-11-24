@@ -1,0 +1,113 @@
+---
+interface ArchitectureLabels {
+  source: string;
+  stage: string;
+  bronze: string;
+  silver: string;
+  gold: string;
+  fileFormat: string;
+  rawTable: string;
+  cleanTable: string;
+  views: string[];
+  notebook: string;
+  dataframe: string;
+  aggregations: string;
+}
+
+interface WorkflowLabels {
+  stage: string;
+  copy: string;
+  bronze: string;
+  cleansing: string;
+  silver: string;
+  views: string;
+  analysis: string;
+  session: string;
+  dataframe: string;
+  transformations: string;
+  aggregates: string;
+  sqlRoute: string;
+  notebookRoute: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  architectureLabels?: ArchitectureLabels;
+  workflowLabels?: WorkflowLabels;
+}
+
+const { title, description, architectureLabels, workflowLabels } = Astro.props;
+---
+
+<figure class="ai-diagram" aria-labelledby="ai-diagram-caption">
+  <figcaption id="ai-diagram-caption">{title}</figcaption>
+  <div class="diagram-scroll" tabindex="0" aria-label={description}>
+    {architectureLabels ? (
+      <svg viewBox="0 0 1280 525" role="img" aria-labelledby="ai-architecture-title ai-architecture-description">
+        <title id="ai-architecture-title">{title}</title>
+        <desc id="ai-architecture-description">{description}</desc>
+        <defs><marker id="ai-architecture-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" /></marker></defs>
+        <g class="flow-lines">
+          <path d="M170 75 H215" /><path d="M395 75 H440" /><path d="M610 75 H655" /><path d="M825 75 H870" /><path d="M1040 75 H1085" />
+          <path d="M1165 115 V170 H190 V210" /><path d="M1165 170 H640 V210" /><path d="M1165 170 V210 H1090" />
+          <path class="complement-line" d="M300 115 V410 H380" /><path class="complement-line" d="M560 445 H600" /><path class="complement-line" d="M820 445 H860" />
+        </g>
+        <g class="flow-node source"><rect x="10" y="35" width="160" height="80" rx="12" /><text x="90" y="69">{architectureLabels.source}</text><text class="node-subtitle" x="90" y="94">CSV</text></g>
+        <g class="flow-node"><rect x="215" y="35" width="180" height="80" rx="12" /><text x="305" y="67">Snowflake</text><text class="node-subtitle" x="305" y="94">{architectureLabels.stage}</text></g>
+        <text class="node-note" x="305" y="137">{architectureLabels.fileFormat}</text>
+        <g class="flow-node action"><rect x="440" y="35" width="170" height="80" rx="12" /><text x="525" y="83">COPY INTO</text></g>
+        <g class="flow-node layer"><rect x="655" y="35" width="170" height="80" rx="12" /><text x="740" y="67">{architectureLabels.bronze}</text><text class="node-subtitle" x="740" y="94">{architectureLabels.rawTable} · VARCHAR</text></g>
+        <g class="flow-node layer"><rect x="870" y="35" width="170" height="80" rx="12" /><text x="955" y="66">{architectureLabels.silver}</text><text class="node-subtitle" x="955" y="94">{architectureLabels.cleanTable}</text></g>
+        <text class="node-note" x="955" y="137">TRIM · CAST · CASE · BOOLEAN</text>
+        <g class="flow-node layer"><rect x="1085" y="35" width="160" height="80" rx="12" /><text x="1165" y="83">{architectureLabels.gold}</text></g>
+        {architectureLabels.views.map((view, index) => {
+          const x = [20, 470, 920][index];
+          return <g class="flow-node output"><rect x={x} y="210" width="340" height="76" rx="12" /><text x={x + 170} y="253">{view}</text></g>;
+        })}
+        <text class="section-label" x="20" y="365">RUTA COMPLEMENTARIA · NOTEBOOK SNOWPARK</text>
+        <g class="flow-node complement"><rect x="380" y="410" width="180" height="70" rx="12" /><text x="470" y="440">{architectureLabels.notebook}</text><text class="node-subtitle" x="470" y="463">active session</text></g>
+        <g class="flow-node complement"><rect x="600" y="410" width="220" height="70" rx="12" /><text x="710" y="451">{architectureLabels.dataframe}</text></g>
+        <g class="flow-node complement"><rect x="860" y="410" width="220" height="70" rx="12" /><text x="970" y="451">{architectureLabels.aggregations}</text></g>
+      </svg>
+    ) : workflowLabels && (
+      <svg viewBox="0 0 1400 310" role="img" aria-labelledby="ai-workflow-title ai-workflow-description">
+        <title id="ai-workflow-title">{title}</title>
+        <desc id="ai-workflow-description">{description}</desc>
+        <defs><marker id="ai-workflow-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" /></marker></defs>
+        <text class="section-label" x="20" y="28">{workflowLabels.sqlRoute}</text>
+        <g class="flow-lines workflow-lines"><path d="M170 78 H205" /><path d="M370 78 H405" /><path d="M570 78 H605" /><path d="M770 78 H805" /><path d="M970 78 H1005" /><path d="M1170 78 H1205" /></g>
+        {[
+          { x: 10, label: workflowLabels.stage }, { x: 205, label: workflowLabels.copy }, { x: 405, label: workflowLabels.bronze },
+          { x: 605, label: workflowLabels.cleansing }, { x: 805, label: workflowLabels.silver }, { x: 1005, label: workflowLabels.views }, { x: 1205, label: workflowLabels.analysis },
+        ].map((node) => <g class="flow-node"><rect x={node.x} y="48" width="165" height="60" rx="10" /><text x={node.x + 82} y="84">{node.label}</text></g>)}
+        <text class="section-label" x="20" y="172">{workflowLabels.notebookRoute}</text>
+        <g class="flow-lines workflow-lines"><path class="complement-line" d="M230 230 H270" /><path class="complement-line" d="M500 230 H540" /><path class="complement-line" d="M810 230 H850" /></g>
+        <g class="flow-node complement"><rect x="40" y="200" width="190" height="60" rx="10" /><text x="135" y="236">{workflowLabels.session}</text></g>
+        <g class="flow-node complement"><rect x="270" y="200" width="230" height="60" rx="10" /><text x="385" y="236">{workflowLabels.dataframe}</text></g>
+        <g class="flow-node complement"><rect x="540" y="200" width="270" height="60" rx="10" /><text x="675" y="236">{workflowLabels.transformations}</text></g>
+        <g class="flow-node complement"><rect x="850" y="200" width="220" height="60" rx="10" /><text x="960" y="236">{workflowLabels.aggregates}</text></g>
+      </svg>
+    )}
+  </div>
+</figure>
+
+<style>
+  .ai-diagram { margin: 2.25rem 0 0; }
+  figcaption { margin-bottom: 0.85rem; font-weight: 600; }
+  .diagram-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: rgb(11 83 81 / 12%); scrollbar-color: var(--color-secondary) transparent; }
+  svg { display: block; width: 100%; min-width: 0; height: auto; }
+  .flow-lines { fill: none; stroke: var(--color-secondary); stroke-width: 2; marker-end: url(#ai-architecture-arrow); }
+  .workflow-lines { marker-end: url(#ai-workflow-arrow); }
+  .complement-line { stroke-dasharray: 6 5; }
+  marker polygon { fill: var(--color-secondary); }
+  .flow-node rect { fill: var(--color-background); stroke: var(--color-border); stroke-width: 1.5; }
+  .flow-node.layer rect { fill: rgb(11 83 81 / 45%); stroke: var(--color-accent); }
+  .flow-node.action rect { stroke: var(--color-highlight); }
+  .flow-node.output rect { fill: rgb(11 83 81 / 22%); stroke: var(--color-secondary); }
+  .flow-node.complement rect { fill: rgb(11 83 81 / 14%); stroke: var(--color-secondary); }
+  .flow-node text { fill: var(--color-text); font: 600 14px var(--font-sans); text-anchor: middle; }
+  .flow-node .node-subtitle, .node-note { fill: var(--color-text-muted); font: 11px var(--font-mono); text-anchor: middle; }
+  .section-label { fill: var(--color-highlight); font: 12px var(--font-mono); letter-spacing: 1px; }
+  @media (max-width: 72rem) { svg { min-width: 1400px; } }
+</style>

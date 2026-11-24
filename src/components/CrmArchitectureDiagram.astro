@@ -1,0 +1,58 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  labels: { source: string; ingestion: string; bronze: string; silver: string; gold: string; dimension: string; purchaseFact: string; campaignFact: string; github: string; ci: string; tests: string; deploy: string };
+}
+
+const { title, description, labels } = Astro.props;
+---
+
+<figure class="architecture-figure" aria-labelledby="crm-diagram-caption">
+  <figcaption id="crm-diagram-caption">{title}</figcaption>
+  <div class="diagram-scroll" tabindex="0" aria-label={description}>
+    <svg viewBox="0 0 1120 475" role="img" aria-labelledby="crm-diagram-title crm-diagram-description">
+      <title id="crm-diagram-title">{title}</title>
+      <desc id="crm-diagram-description">{description}</desc>
+      <defs>
+        <marker id="crm-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" /></marker>
+      </defs>
+      <g class="flow-lines">
+        <path d="M170 74 H210" /><path d="M370 74 H410" /><path d="M570 74 H610" /><path d="M770 74 H810" />
+        <path d="M890 114 V175 H350 V220" /><path d="M890 175 H620 V220" /><path d="M890 175 V220" />
+        <path d="M300 435 H350" /><path d="M500 435 H550" /><path d="M700 435 H750" />
+      </g>
+      <g class="flow-node source"><rect x="10" y="34" width="160" height="80" rx="12" /><text x="90" y="68">{labels.source}</text><text class="node-subtitle" x="90" y="93">CSV</text></g>
+      <g class="flow-node"><rect x="210" y="34" width="160" height="80" rx="12" /><text x="290" y="68">Databricks</text><text class="node-subtitle" x="290" y="93">{labels.ingestion}</text></g>
+      <g class="flow-node layer"><rect x="410" y="34" width="160" height="80" rx="12" /><text x="490" y="80">{labels.bronze}</text></g>
+      <g class="flow-node quality"><rect x="610" y="34" width="160" height="80" rx="12" /><text x="690" y="68">{labels.silver}</text><text class="node-subtitle" x="690" y="93">3 expect_or_drop rules</text></g>
+      <g class="flow-node layer"><rect x="810" y="34" width="160" height="80" rx="12" /><text x="890" y="80">{labels.gold}</text></g>
+      <g class="flow-node output"><rect x="270" y="220" width="160" height="120" rx="12" /><text x="350" y="273">{labels.dimension}</text><text class="node-subtitle" x="350" y="300">Customer_ID</text></g>
+      <g class="flow-node output"><rect x="540" y="220" width="160" height="120" rx="12" /><text x="620" y="273">{labels.purchaseFact}</text><text class="node-subtitle" x="620" y="300">Customer_ID</text></g>
+      <g class="flow-node output"><rect x="810" y="220" width="160" height="120" rx="12" /><text x="890" y="273">{labels.campaignFact}</text><text class="node-subtitle" x="890" y="300">Customer_ID</text></g>
+      <text class="section-label" x="20" y="402">CI/CD · TEST BEFORE DEPLOY</text>
+      <g class="flow-node ci"><rect x="160" y="410" width="140" height="50" rx="10" /><text x="230" y="441">{labels.github}</text></g>
+      <g class="flow-node ci"><rect x="350" y="410" width="150" height="50" rx="10" /><text x="425" y="441">{labels.ci}</text></g>
+      <g class="flow-node ci"><rect x="550" y="410" width="150" height="50" rx="10" /><text x="625" y="441">{labels.tests}</text></g>
+      <g class="flow-node ci"><rect x="750" y="410" width="160" height="50" rx="10" /><text x="830" y="441">{labels.deploy}</text></g>
+    </svg>
+  </div>
+</figure>
+
+<style>
+  .architecture-figure { margin: 2.25rem 0 0; }
+  figcaption { margin-bottom: 0.85rem; font-weight: 600; }
+  .diagram-scroll { max-width: 100%; overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: rgb(11 83 81 / 12%); scrollbar-color: var(--color-secondary) transparent; }
+  svg { display: block; width: 100%; min-width: 0; height: auto; }
+  .flow-lines { fill: none; stroke: var(--color-secondary); stroke-width: 2; marker-end: url(#crm-arrow); }
+  marker polygon { fill: var(--color-secondary); }
+  .flow-node rect { fill: var(--color-background); stroke: var(--color-border); stroke-width: 1.5; }
+  .flow-node.layer rect { fill: rgb(11 83 81 / 55%); stroke: var(--color-accent); }
+  .flow-node.quality rect { stroke: var(--color-highlight); }
+  .flow-node.output rect { fill: rgb(11 83 81 / 22%); }
+  .flow-node.ci rect { fill: rgb(11 83 81 / 22%); stroke: var(--color-secondary); }
+  .flow-node text { fill: var(--color-text); font: 600 15px var(--font-sans); text-anchor: middle; }
+  .flow-node .node-subtitle { fill: var(--color-text-muted); font: 12px var(--font-mono); }
+  .section-label { fill: var(--color-highlight); font: 12px var(--font-mono); letter-spacing: 1px; }
+  @media (max-width: 72rem) { svg { min-width: 1120px; } }
+</style>

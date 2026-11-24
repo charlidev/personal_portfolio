@@ -1,0 +1,118 @@
+---
+import type { OlistProjectCopy } from '../i18n/olistProject';
+
+interface Props { example: OlistProjectCopy['codeExamples'][number] }
+const { example } = Astro.props;
+
+const escapeHtml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+const highlight = (source: string) => {
+  const tokenPattern = /(#[^\n]*|--[^\n]*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b(?:from|import|as|for|in|True|False|None|CREATE|OR|REPLACE|FILE|FORMAT|TYPE|FIELD_DELIMITER|SKIP_HEADER|NULL_IF|EMPTY_FIELD_AS_NULL|STAGE|DIRECTORY|ENABLE|TABLE|VARCHAR|COPY|INTO|FILES|CONTINUE|SELECT|TRIM|CAST|CASE|WHEN|THEN|ELSE|END|AS|CURRENT_TIMESTAMP|VIEW|ROUND|AVG|COUNT|GROUP|BY|USE|DATABASE|SCHEMA|SESSION|Snowpark)\b|\b\d+\b)/gi;
+  let html = '';
+  let cursor = 0;
+
+  for (const match of source.matchAll(tokenPattern)) {
+    const token = match[0];
+    const index = match.index ?? 0;
+    html += escapeHtml(source.slice(cursor, index));
+    const tokenClass = token.startsWith('#') || token.startsWith('--')
+      ? 'token-comment'
+      : token.startsWith('"') || token.startsWith("'")
+        ? 'token-string'
+        : /^\d+$/.test(token)
+          ? 'token-number'
+          : 'token-keyword';
+    html += `<span class="${tokenClass}">${escapeHtml(token)}</span>`;
+    cursor = index + token.length;
+  }
+
+  return html + escapeHtml(source.slice(cursor));
+};
+---
+
+<article class="code-example">
+  <header class="code-example-heading">
+    <div>
+      <p class="eyebrow">{example.layer}</p>
+      <h3>{example.title}</h3>
+    </div>
+    <span class="code-file">{example.file}</span>
+  </header>
+  <p class="code-description">{example.description}</p>
+  <pre><code class={`language-${example.language ?? 'python'}`} set:html={highlight(example.code)}></code></pre>
+  {example.supportingCode?.map((snippet) => (
+    <div class="supporting-code">
+      <h4>{snippet.title}</h4>
+      <pre><code class={`language-${snippet.language}`} set:html={highlight(snippet.code)}></code></pre>
+    </div>
+  ))}
+  <a href={example.url} target="_blank" rel="noopener noreferrer">
+    {example.file} <span aria-hidden="true">↗</span>
+  </a>
+</article>
+
+<style>
+  .code-example {
+    min-width: 0;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .code-example-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .code-example h3 {
+    margin: 0.35rem 0 0;
+    font-size: var(--text-lg);
+    line-height: 1.35;
+  }
+
+  .code-file {
+    max-width: 50%;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+
+  .code-description {
+    color: var(--color-text-muted);
+  }
+
+  pre {
+    max-width: 100%;
+    margin: 1rem 0;
+    padding: 1rem;
+    overflow: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: rgb(0 0 0 / 18%);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    line-height: 1.7;
+    tab-size: 4;
+  }
+
+  .code-example a {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    overflow-wrap: anywhere;
+  }
+  .supporting-code h4 { margin: 1.25rem 0 0; font-size: var(--text-base); }
+
+  :global(.token-keyword) { color: var(--color-highlight); }
+  :global(.token-string) { color: var(--color-accent); }
+  :global(.token-number) { color: var(--color-secondary); }
+  :global(.token-comment) { color: var(--color-text-muted); }
+
+  @media (max-width: 38rem) {
+    .code-example-heading { flex-direction: column; }
+    .code-file { max-width: 100%; text-align: left; }
+    pre { padding: 0.8rem; }
+  }
+</style>

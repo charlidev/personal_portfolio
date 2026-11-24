@@ -19,14 +19,16 @@ const { projects } = getPortfolioData(locale);
         <p class="project-technologies">
           <span>{copy.technologies}</span> {project.technologies.join(' · ')}
         </p>
-        {project.href ? (
+        {project.detailUrl ? (
           <a
             class="project-link"
-            href={project.href}
-            target={project.external ? '_blank' : undefined}
-            rel={project.external ? 'noopener noreferrer' : undefined}
+            href={project.detailUrl}
           >
-            {copy.viewProject} <span aria-hidden="true">↗</span>
+            {copy.viewProject} <span aria-hidden="true">→</span>
+          </a>
+        ) : project.repositoryUrl ? (
+          <a class="project-link" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">
+            {copy.viewRepository} <span aria-hidden="true">↗</span>
           </a>
         ) : (
           <span class="project-link">{copy.projectPagePending}</span>

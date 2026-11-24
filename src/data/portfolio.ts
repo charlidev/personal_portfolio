@@ -8,8 +8,8 @@ export interface PortfolioProject {
   title: string;
   description: string;
   technologies: string[];
-  href?: string;
-  external?: boolean;
+  detailUrl?: string;
+  repositoryUrl?: string;
 }
 
 export interface ContactMethod {
@@ -107,8 +107,8 @@ export const projects: PortfolioProject[] = [
     description:
       'Pipeline de datos para Olist desarrollado con PySpark y Databricks. Incluye ingesta de nueve datasets con Auto Loader en Bronze, limpieza y deduplicación en Silver, y cinco data marts agregados en Gold.',
     technologies: ['Python', 'PySpark', 'Databricks', 'Auto Loader', 'Delta Lake', 'ADLS Gen2'],
-    href: 'https://github.com/charlidev/Project_06_Olist',
-    external: true,
+    detailUrl: '/proyectos/olist/',
+    repositoryUrl: 'https://github.com/charlidev/Project_06_Olist',
   },
   {
     number: 2,
@@ -124,8 +124,8 @@ export const projects: PortfolioProject[] = [
       'Databricks Asset Bundles',
       'GitHub Actions',
     ],
-    href: 'https://github.com/charlidev/Project_08_Marketing',
-    external: true,
+    detailUrl: '/proyectos/crm-marketing/',
+    repositoryUrl: 'https://github.com/charlidev/Project_08_Marketing',
   },
   {
     number: 3,
@@ -140,8 +140,8 @@ export const projects: PortfolioProject[] = [
       'Internal Stage',
       'COPY INTO',
     ],
-    href: 'https://github.com/charlidev/AI_Job_Impact_Analysis_Snowflake_Data_Pipeline',
-    external: true,
+    detailUrl: '/proyectos/ai-job-impact/',
+    repositoryUrl: 'https://github.com/charlidev/AI_Job_Impact_Analysis_Snowflake_Data_Pipeline',
   },
 ];
 

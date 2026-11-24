@@ -45,6 +45,56 @@ export type OlistProjectCopy = {
   crmDiagramLabels?: { source: string; ingestion: string; bronze: string; silver: string; gold: string; dimension: string; purchaseFact: string; campaignFact: string; github: string; ci: string; tests: string; deploy: string };
   aiDiagramLabels?: { source: string; stage: string; bronze: string; silver: string; gold: string; fileFormat: string; rawTable: string; cleanTable: string; views: string[]; notebook: string; dataframe: string; aggregations: string };
   aiWorkflowLabels?: { stage: string; copy: string; bronze: string; cleansing: string; silver: string; views: string; analysis: string; session: string; dataframe: string; transformations: string; aggregates: string; sqlRoute: string; notebookRoute: string };
+  ferreteriaDiagramLabels?: {
+    source: string;
+    localFiles: string;
+    catalogGroupTitle: string;
+    transactionGroupTitle: string;
+    catalogSources: string[];
+    transactionSources: string[];
+    adls: string;
+    autoLoader: string;
+    bronze: string;
+    silver: string;
+    gold: string;
+    silverOps: string[];
+    goldOutputs: string[];
+    unityCatalogTitle: string;
+    environments: string[];
+  };
+  ecommerceDiagramLabels?: {
+    marketplace: string;
+    raw: string;
+    clean: string;
+    dedup: string;
+    finalView: string;
+    finalTable: string;
+    validationTitle: string;
+    validationStages: string[];
+    cleanOps: string[];
+    dedupOps: string[];
+    finalOps: string[];
+  };
+  retailDiagramLabels?: {
+    source: string;
+    stage: string;
+    copyInto: string;
+    bronze: string;
+    silver: string;
+    gold: string;
+    goldViews: string[];
+    powerBi: string;
+    alternativesTitle: string;
+    databricksTitle: string;
+    databricksBullets: string[];
+    snowparkTitle: string;
+    snowparkBullets: string[];
+  };
+  retailInsights?: {
+    title: string;
+    items: { title: string; view: string; metrics: string[]; question: string }[];
+  };
+  workflowAlternatives?: { title: string; items: { name: string; description: string }[] };
   workflowDiagramTitle?: string;
   workflowDiagramDescription?: string;
   componentsTitle: string;
@@ -67,6 +117,7 @@ export type OlistProjectCopy = {
   repositoryUrl?: string;
   repositoryLinkLabel?: string;
   evidence?: { title: string; description: string; links: { label: string; url: string }[] };
+  validationQueries?: { title: string; items: string[] };
   languageSwitchLabel: string;
   projectNavigationLabel: string;
   footer: string;

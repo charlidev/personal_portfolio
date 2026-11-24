@@ -1,0 +1,120 @@
+---
+import type { OlistProjectCopy } from '../i18n/olistProject';
+
+interface Props {
+  title: string;
+  description: string;
+  labels: NonNullable<OlistProjectCopy['ecommerceDiagramLabels']>;
+}
+
+const { title, description, labels } = Astro.props;
+const stages = [
+  { name: labels.marketplace, operations: [] },
+  { name: labels.raw, operations: [] },
+  { name: labels.clean, operations: labels.cleanOps },
+  { name: labels.dedup, operations: labels.dedupOps },
+  { name: labels.finalView, operations: labels.finalOps },
+  { name: labels.finalTable, operations: [] },
+];
+---
+
+<figure class="quality-diagram" aria-labelledby="quality-diagram-title">
+  <figcaption>
+    <h3 id="quality-diagram-title">{title}</h3>
+    <p>{description}</p>
+  </figcaption>
+
+  <div class="flow-with-validation">
+    <ol class="pipeline-flow" aria-label={title}>
+      {stages.map((stage, index) => (
+        <li class:list={['pipeline-stage', { 'source-stage': index === 0, 'output-stage': index === stages.length - 1 }]}>
+          <span class="stage-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <strong>{stage.name}</strong>
+          {stage.operations.length > 0 && (
+            <ul class="operation-list">
+              {stage.operations.map((operation) => <li>{operation}</li>)}
+            </ul>
+          )}
+          {index < stages.length - 1 && <span class="flow-arrow" aria-hidden="true">→</span>}
+        </li>
+      ))}
+    </ol>
+
+    <aside class="validation-rail">
+      <h4>{labels.validationTitle}</h4>
+      <ul>{labels.validationStages.map((stage) => <li>{stage}</li>)}</ul>
+    </aside>
+  </div>
+</figure>
+
+<style>
+  .quality-diagram {
+    margin: 2.5rem 0 0;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-content-card-background);
+    box-shadow: var(--color-card-shadow);
+  }
+
+  figcaption h3 { margin: 0; font-size: var(--text-lg); }
+  figcaption p { max-width: 72ch; margin: 0.55rem 0 0; color: var(--color-text-muted); }
+
+  .flow-with-validation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(11rem, 0.22fr);
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .pipeline-flow {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pipeline-stage {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-card-background);
+  }
+
+  .source-stage { border-color: var(--color-secondary); }
+  .output-stage { border-color: var(--color-accent); background: var(--color-summary-background); }
+  .stage-index { color: var(--color-secondary); font-family: var(--font-mono); font-size: var(--text-xs); }
+  .pipeline-stage strong { color: var(--color-text); font-size: var(--text-xs); line-height: 1.45; overflow-wrap: anywhere; }
+  .operation-list { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0; padding: 0; list-style: none; }
+  .operation-list li { padding: 0.18rem 0.35rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: var(--color-text-muted); font-family: var(--font-mono); font-size: 0.65rem; overflow-wrap: anywhere; }
+  .flow-arrow { position: absolute; z-index: 1; top: 50%; right: -0.48rem; color: var(--color-accent); font-size: var(--text-sm); transform: translate(50%, -50%); }
+
+  .validation-rail { min-width: 0; padding: 0.8rem 0 0.8rem 0.9rem; border-left: 1px solid var(--color-secondary); }
+  .validation-rail h4 { margin: 0; color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); line-height: 1.5; text-transform: uppercase; }
+  .validation-rail ul { display: grid; gap: 0.7rem; margin: 0.8rem 0 0; padding: 0; list-style: none; }
+  .validation-rail li { position: relative; color: var(--color-text-muted); font-size: var(--text-xs); line-height: 1.45; overflow-wrap: anywhere; }
+  .validation-rail li::before { position: absolute; top: 0.35em; left: -1.17rem; width: 0.4rem; height: 0.4rem; border: 1px solid var(--color-accent); border-radius: 50%; background: var(--color-content-card-background); content: ''; }
+
+  @media (max-width: 54rem) {
+    .flow-with-validation { grid-template-columns: 1fr; }
+    .pipeline-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .flow-arrow { display: none; }
+    .validation-rail { padding: 0.9rem 0 0; border-top: 1px solid var(--color-border); border-left: 0; }
+    .validation-rail ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .validation-rail li::before { left: -0.7rem; }
+  }
+
+  @media (max-width: 38rem) {
+    .pipeline-flow { grid-template-columns: 1fr; }
+    .pipeline-stage { min-height: 3.25rem; }
+    .validation-rail ul { grid-template-columns: 1fr; }
+  }
+</style>
